@@ -9,7 +9,7 @@ Allows users to:
 5. Track spending trends over time.
 
 **Tech Stack:**
-Frontend - React.js
-Backend - Python (Flask) for API development
-Database - PostgreSQL
-Authentication - JWT for secure user authentication
+1. Frontend - React.js
+2. Backend - Python (Flask) for API development
+3. Database - PostgreSQL
+4. Authentication - JWT for secure user authentication
