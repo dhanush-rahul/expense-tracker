@@ -13,3 +13,8 @@ Allows users to:
 2. Backend - Python (Flask) for API development
 3. Database - PostgreSQL
 4. Authentication - JWT for secure user authentication
+
+Flask Setup:
+python3 -m venv venv
+venv\Scripts\activate
+pip install flask flask-jwt-extended flask-sqlalchemy flask-migrate
