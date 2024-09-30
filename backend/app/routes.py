@@ -9,7 +9,7 @@ api_bp = Blueprint('api', __name__)
 @api_bp.route('/auth/register', methods=['POST'])
 def register():
     data = request.json
-    username = data.get('username')
+    username = data.get('email')
     password = data.get('password')
 
     if User.query.filter_by(username=username).first():
@@ -26,7 +26,7 @@ def register():
 @api_bp.route('/auth/login', methods=['POST'])
 def login():
     data = request.json
-    username = data.get('username')
+    username = data.get('email')
     password = data.get('password')
 
     user = User.query.filter_by(username=username).first()
@@ -42,9 +42,18 @@ def login():
 @api_bp.route('/expenses', methods=['GET'])
 @jwt_required()
 def get_expenses():
-    user_id = get_jwt_identity()
-    expenses = Expense.query.filter_by(user_id=user_id).all()
-    return jsonify([expense.to_dict() for expense in expenses]), 200
+    try:
+        user_id = get_jwt_identity()
+        expenses = Expense.query.filter_by(user_id=user_id).all()
+
+        if not expenses:
+            return jsonify({'message': 'No expenses found for this user'}), 200
+
+        return jsonify([expense.to_dict() for expense in expenses]), 200
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return jsonify({'message': 'An error occurred'}), 200
 
 
 @api_bp.route('/expenses', methods=['POST'])
@@ -68,3 +77,5 @@ def edit_expense(id):
 def remove_expense(id):
     user_id = get_jwt_identity()
     return delete_expense(id, user_id)
+
+
