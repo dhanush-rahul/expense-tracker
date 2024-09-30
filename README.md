@@ -11,7 +11,7 @@ Allows users to:
 **Tech Stack:**
 1. Frontend - React.js
 2. Backend - Python (Flask) for API development
-3. Database - PostgreSQL
+3. Database - Flask
 4. Authentication - JWT for secure user authentication
 
 Flask Setup:
