@@ -16,6 +16,7 @@ class Expense(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Float, nullable=False)
     category = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(1000), nullable=False)
     date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('expenses', lazy=True))
@@ -24,6 +25,7 @@ class Expense(db.Model):
             'id': self.id,
             'amount': self.amount,
             'category': self.category,
+            'description': self.description,
             'date': self.date.strftime('%Y-%m-%d'),
             'user_id': self.user_id
         }

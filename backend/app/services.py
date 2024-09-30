@@ -2,11 +2,13 @@ from flask import jsonify
 from app.models import Expense, db
 from datetime import datetime
 
+
 def create_expense(data, user_id):
     try:
         new_expense = Expense(
             amount=data.get('amount'),
             category=data.get('category'),
+            description=data.get('description'),
             date=datetime.strptime(data.get('date'), '%Y-%m-%d'),
             user_id=user_id
         )
@@ -24,6 +26,7 @@ def update_expense(expense_id, data, user_id):
 
     expense.amount = data.get('amount', expense.amount)
     expense.category = data.get('category', expense.category)
+    expense.description = data.get('description', expense.description)
     expense.date = datetime.strptime(data.get('date', str(expense.date)), '%Y-%m-%d')
     db.session.commit()
 
