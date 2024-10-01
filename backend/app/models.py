@@ -1,5 +1,10 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import Enum
+
+# Define the list of categories
+categories = ['Entertainment', 'Food', 'Utilities', 'Transportation', 'Rent', 'Subscriptions']
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -15,7 +20,7 @@ class User(db.Model):
 class Expense(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Float, nullable=False)
-    category = db.Column(db.String(100), nullable=False)
+    category = db.Column(Enum(*categories, name="category_types"), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
     date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

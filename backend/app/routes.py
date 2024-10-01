@@ -37,6 +37,10 @@ def login():
     access_token = create_access_token(identity=user.id)
     return jsonify({'access_token': access_token}), 200
 
+@api_bp.route('/getCategories', methods=['GET'])
+def get_categories():
+    CATEGORIES = ['Entertainment', 'Food', 'Utilities', 'Transportation', 'Rent', 'Subscriptions']
+    return jsonify(CATEGORIES), 200
 
 # Expense Management Routes
 @api_bp.route('/expenses', methods=['GET'])
