@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
-from sqlalchemy import desc
 from app.models import User, Expense, db
 from app.services import create_expense, update_expense, delete_expense
 
@@ -49,7 +48,7 @@ def get_categories():
 def get_expenses():
     try:
         user_id = get_jwt_identity()
-        expenses = Expense.query.filter_by(user_id=user_id).order_by(desc(Expense.date)).all()
+        expenses = Expense.query.filter_by(user_id=user_id).all()
 
         if not expenses:
             return jsonify({'message': 'No expenses found for this user'}), 200
