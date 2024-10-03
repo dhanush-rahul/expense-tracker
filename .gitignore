@@ -1,1 +1,24 @@
 venv/
+# Python-related ignores
+__pycache__/
+app/__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+*.sqlite3
+
+# Virtual environment folder
+venv/
+
+# Migrations
+migrations/
+
+# Database
+instance/expenses.db
+
+# Environment Variables
+.env
