@@ -14,8 +14,12 @@ Allows users to:
 3. Database - Flask
 4. Authentication - JWT for secure user authentication
 
-Flask Setup:
+Backend Setup:
 
-python3 -m venv venv
-venv\Scripts\activate
-pip install flask flask-jwt-extended flask-sqlalchemy flask-migrate
+1. python3 -m venv venv
+2. venv\Scripts\activate
+3. pip install flask flask-jwt-extended flask-sqlalchemy flask-migrate flask_cors
+4. flask db init
+5. flask db migrate
+6. flask db upgrade
+7. python run.py

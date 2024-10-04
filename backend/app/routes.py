@@ -11,12 +11,13 @@ def register():
     data = request.json
     username = data.get('email')
     password = data.get('password')
-
+    monthly_income = data.get('monthlyIncome')
     if User.query.filter_by(username=username).first():
         return jsonify({'message': 'Username already exists'}), 400
 
     new_user = User(username=username)
     new_user.set_password(password)
+    new_user.monthly_income = monthly_income
     db.session.add(new_user)
     db.session.commit()
 
@@ -36,6 +37,17 @@ def login():
 
     access_token = create_access_token(identity=user.id)
     return jsonify({'access_token': access_token}), 200
+
+@api_bp.route('/getUserMonthlyIncome/<int:id>', methods=['GET'])
+@jwt_required
+def getUserMonthlyIncome():
+    try:
+        user_id = get_jwt_identity()
+        user = User.query.get(user_id)
+        return jsonify({'monthly_income': user.monthly_income}), 200
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return jsonify({'message': 'An error occurred'}), 200
 
 @api_bp.route('/getCategories', methods=['GET'])
 def get_categories():

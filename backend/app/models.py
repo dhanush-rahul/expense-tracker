@@ -10,6 +10,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
+    monthly_income = db.Column(db.Float, nullable=True, default=0.0)  # New field for monthly income
+
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

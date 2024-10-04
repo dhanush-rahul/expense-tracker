@@ -7,6 +7,7 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [monthlyIncome, setMonthlyIncome] = useState(0);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -15,7 +16,7 @@ const Register = () => {
       return;
     }
     try {
-      await axiosInstance.post('/auth/register', { email, password });
+      await axiosInstance.post('/auth/register', { email, password, monthlyIncome });
       // Redirect to login page
     } catch (error) {
       console.error('Registration failed:', error);
@@ -78,6 +79,18 @@ const Register = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your password"
+                  required
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Set your monthly income:</label>
+                <input
+                  type="text"
+                  value={monthlyIncome}
+                  onChange={(e) => setMonthlyIncome(e.target.value)}
+                  placeholder="Enter your monthly income"
                   required
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
