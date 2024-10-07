@@ -4,12 +4,18 @@ import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance';
 
-const AddEditExpense = ({ existingExpense = false }) => {
+const AddEditExpense = ({ existingExpense = false, onSubmitSuccess }) => {
   const [amount, setAmount] = useState(existingExpense?.amount || '');
   const [category, setCategory] = useState(existingExpense?.category || '');
   const [categories, setCategories] = useState([]);
-  const [date, setDate] = useState(existingExpense?.date || '');
-  const [description, setDescription] = useState(existingExpense?.description || '');
+  const [date, setDate] = useState(() => {
+    if (existingExpense?.date) {
+      return existingExpense.date;
+    } else {
+      const today = new Date();
+      return today.toISOString().split('T')[0]; // This formats the date as YYYY-MM-DD
+    }
+  });  const [description, setDescription] = useState(existingExpense?.description || '');
   const navigate = useNavigate();
 
  // Fetch categories from the API
@@ -25,10 +31,13 @@ const AddEditExpense = ({ existingExpense = false }) => {
 
   fetchCategories();
 }, []);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem('token');
-    const data = { amount, category, date, description };
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem('token');
+  const data = { amount, category, date, description };
+
+  try {
     if (existingExpense) {
       // Edit expense
       await axiosInstance.put(`/expenses/${existingExpense.id}`, data, {
@@ -40,13 +49,18 @@ const AddEditExpense = ({ existingExpense = false }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
     }
-    navigate('/dashboard');
-  };
+    
+    // Notify parent component (Dashboard) of success
+    onSubmitSuccess(); // Call the success function
+  } catch (error) {
+    console.error('Error submitting expense:', error);
+  }
+};
 
   return (
     <div>
     <div class="flex justify-center items-center ">
-    <div class="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full">
+    <div class="p-8 max-w-lg w-full">
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">
         {existingExpense ? 'Edit' : 'Add'} Expense
       </h2>

@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axiosInstance from '../utils/axiosInstance';
+import { useNavigate } from 'react-router-dom';
+import { isAuthenticated } from '../utils/auth';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -8,12 +10,19 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [monthlyIncome, setMonthlyIncome] = useState(0);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isAuthenticated()) {
 
+      // If authenticated, redirect to dashboard or any other page
+      navigate('/dashboard');
+    }
+  }, [navigate]);
   const handleRegister = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       console.error('Passwords do not match');
-      return;
+      navigate('/dashboard');
     }
     try {
       await axiosInstance.post('/auth/register', { email, password, monthlyIncome });
@@ -87,7 +96,7 @@ const Register = () => {
               <div>
                 <label className="block text-sm font-medium text-gray-700">Set your monthly income:</label>
                 <input
-                  type="text"
+                  type="number"
                   value={monthlyIncome}
                   onChange={(e) => setMonthlyIncome(e.target.value)}
                   placeholder="Enter your monthly income"

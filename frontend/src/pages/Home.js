@@ -35,28 +35,22 @@ const Home = () => {
             </header>
 
             {/* Track Balance Section */}
-            <Section bgColor="bg-gray-800" text="Track balance" imageSrc="" />
+            <Section bgColor="bg-gray-800" text="Track balance" imageSrc={`${process.env.PUBLIC_URL}/track_balance.png`} />
 
             {/* Organize Expenses Section */}
-            <Section bgColor="bg-teal-500" text="Organize expenses" imageSrc="" />
+            <Section bgColor="bg-teal-500" text="Organize expenses" imageSrc={`${process.env.PUBLIC_URL}/expenses.png`} />
 
             {/* Add Expenses Section */}
-            <Section bgColor="bg-orange-500" text="Add expenses easily" imageSrc="" />
+            <Section bgColor="bg-orange-500" text="Add expenses easily" imageSrc={`${process.env.PUBLIC_URL}/add_expense.png`}  />
 
-            {/* Pay Friends Back Section */}
-            <Section bgColor="bg-gray-800" text="Pay friends back" imageSrc="" />
 
             {/* Get More Section */}
-            <Section bgColor="bg-purple-700" text="Get even more with PRO" imageSrc="" />
+            <Section bgColor="bg-purple-700" text="Check your monthly spends" imageSrc={`${process.env.PUBLIC_URL}/compare.png`} />
 
             {/* Footer */}
             <footer className="bg-gray-100 py-4 text-gray-800">
-                <p className="text-center mb-4">© 2024 Splitwise</p>
-                <div className="text-center space-x-4">
-                    <a href="#" className="hover:underline">About</a>
-                    <a href="#" className="hover:underline">Help</a>
-                    <a href="#" className="hover:underline">Terms</a>
-                </div>
+                <p className="text-center mb-4">© 2024 Expense-Tracker</p>
+                
             </footer>
         </div>
     );

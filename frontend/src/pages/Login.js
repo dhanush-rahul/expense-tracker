@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axiosInstance from '../utils/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { isAuthenticated } from '../utils/auth';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [captchaValue, setCaptchaValue] = useState(null);
   const navigate = useNavigate();
+  useEffect(() => {
+    if (isAuthenticated()) {
 
+      // If authenticated, redirect to dashboard or any other page
+      navigate('/dashboard');
+    }
+  }, [navigate]);
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -67,21 +74,9 @@ const Login = () => {
             </a>
           </div>
 
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-gray-500">or</span>
-            </div>
-          </div>
+          
 
-          <button
-            className="w-full flex items-center justify-center bg-white text-gray-700 border border-gray-300 py-2 px-4 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            <img src="/google-logo.png" alt="Google logo" className="w-5 h-5 mr-2" />
-            Sign in with Google
-          </button>
+          
         </form>
       </div>
     </div>

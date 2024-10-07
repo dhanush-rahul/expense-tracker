@@ -45,7 +45,7 @@ const CategoricalReport = ({ expenses, selectedMonth }) => {
 
   return (
     <div className="flex justify-center">
-      <div className="max-w-lg h-[40vh]"> {/* Responsive container */}
+      <div className="max-w-lg h-[40vh] content-center"> {/* Responsive container */}
         <Pie data={data} options={options} />
       </div>
     </div>
