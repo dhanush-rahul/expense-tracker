@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import Modal from '../components/Modal'; // Assuming you have a Modal component
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'https://expense-tracker-backend-flask.onrender.com/api',
 });
 
 // Global function to render a modal dynamically
