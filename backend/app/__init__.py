@@ -11,7 +11,7 @@ jwt = JWTManager()
 
 def create_app():
     app = Flask(__name__)
-    CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+    CORS(app, resources={r"/api/*": {"origins": "https://expense-tracker-topaz-rho.vercel.app/"}})
 
     # Load configurations from config.py
     app.config.from_object('config.Config')
