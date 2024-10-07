@@ -4,6 +4,10 @@ import Modal from '../components/Modal'; // Assuming you have a Modal component
 
 const axiosInstance = axios.create({
   baseURL: 'https://expense-tracker-backend-flask.onrender.com/api',
+  headers: {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
+  }
 });
 
 // Global function to render a modal dynamically
