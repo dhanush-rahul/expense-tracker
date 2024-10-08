@@ -6,7 +6,6 @@ const axiosInstance = axios.create({
   baseURL: 'https://expense-tracker-cpg9.vercel.app/api',
   headers: {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*'
   },
   withCredentials: true,
 });
