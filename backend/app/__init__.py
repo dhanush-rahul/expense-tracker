@@ -11,13 +11,12 @@ jwt = JWTManager()
 
 def create_app():
     app = Flask(__name__)
-    # Configure CORS
+    # Update CORS settings for preflight requests
     CORS(app, resources={r"/api/*": {
-        "origins": "*",  # Open to all origins for testing, you can restrict it later
+        "origins": "https://expense-tracker-topaz-rho.vercel.app",
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"],
-        "expose_headers": ["Content-Type", "Authorization"],
-        "supports_credentials": True  # Use if you have cookies or authentication
+        "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers"],
+        "supports_credentials": True,
     }})
     # Set a different path for the instance folder or use a temporary directory
     app.instance_path = os.getenv("INSTANCE_PATH", "/tmp")
