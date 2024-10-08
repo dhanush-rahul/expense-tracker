@@ -3,19 +3,21 @@ import axiosInstance from '../utils/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { isAuthenticated } from '../utils/auth';
+import Modal from '../components/Modal';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [captchaValue, setCaptchaValue] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
   const navigate = useNavigate();
+
   useEffect(() => {
     if (isAuthenticated()) {
-
-      // If authenticated, redirect to dashboard or any other page
       navigate('/dashboard');
     }
   }, [navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -23,10 +25,14 @@ const Login = () => {
       localStorage.setItem('token', response.data.access_token); // Store JWT
       navigate('/dashboard');
     } catch (error) {
-      console.error('Login failed:', error);
+      const message = error.response?.data?.message || 'Login failed. Please try again.';
+      setErrorMessage(message); // Set the error message to show in modal
+      setIsModalOpen(true); // Open modal
     }
   };
-
+  const closeModal = () => {
+    setIsModalOpen(false); // Close modal
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -71,16 +77,26 @@ const Login = () => {
             <a href="/forgot-password" className="text-sm text-green-600 hover:underline font-bold">
               Forgot your password?
             </a>
+            <span></span>
             <a href="/register" className="text-sm text-green-600 hover:underline font-bold">
               Register Now
             </a>
           </div>
-
-          
-
-          
         </form>
       </div>
+      {/* Modal for displaying error message */}
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <div className="p-4">
+          <h3 className="text-lg font-bold">Login Error</h3>
+          <p className="mt-2 text-sm">{errorMessage}</p>
+          <button
+            className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md"
+            onClick={closeModal}
+          >
+            Close
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };
