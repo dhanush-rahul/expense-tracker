@@ -209,3 +209,10 @@ def reset_password():
 @api_bp.route('/api/<path:path>', methods=['OPTIONS'])
 def options_handler(path):
     return '',200
+
+@api_bp.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')  # Update with your frontend URL
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+    return response

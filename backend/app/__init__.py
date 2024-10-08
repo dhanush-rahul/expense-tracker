@@ -13,10 +13,11 @@ def create_app():
     app = Flask(__name__)
     # Configure CORS
     CORS(app, resources={r"/api/*": {
-        "origins": "https://expense-tracker-topaz-rho.vercel.app",
+        "origins": "*",  # Open to all origins for testing, you can restrict it later
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"],
-        "supports_credentials": True  # Enable this if you're using cookies or JWT
+        "expose_headers": ["Content-Type", "Authorization"],
+        "supports_credentials": True  # Use if you have cookies or authentication
     }})
     # Set a different path for the instance folder or use a temporary directory
     app.instance_path = os.getenv("INSTANCE_PATH", "/tmp")
