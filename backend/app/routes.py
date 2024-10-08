@@ -205,3 +205,7 @@ def reset_password():
     except Exception as e:
         print(f"Error resetting password: {e}")
         return jsonify({"message": "Failed to reset password"}), 500
+    
+@api_bp.route('/api/<path:path>', methods=['OPTIONS'])
+def options_handler(path):
+    return '',200
