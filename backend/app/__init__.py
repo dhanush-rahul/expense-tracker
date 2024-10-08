@@ -39,4 +39,13 @@ def create_app():
         
     with app.app_context():
         db.create_all()  # This will create the tables
+
+        
+    @app.after_request
+    def apply_cors_headers(response):
+        response.headers["Access-Control-Allow-Origin"] = "https://expense-tracker-topaz-rho.vercel.app"  # Allowed frontend origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"  # Allow credentials (cookies, etc.)
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"  # Allowed headers
+        response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"  # Allowed methods
+        return response
     return app
