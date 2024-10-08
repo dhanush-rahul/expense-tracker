@@ -34,4 +34,7 @@ def create_app():
     # Avoid creating the instance folder if it doesn't exist
     if not os.path.exists(app.instance_path):
         app.instance_path = "/tmp"  # Use the temporary directory
+        
+    with app.app_context():
+        db.create_all()  # This will create the tables
     return app
