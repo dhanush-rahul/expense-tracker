@@ -37,7 +37,7 @@ def login():
     user = User.query.filter_by(username=username).first()
 
     if not user or not user.check_password(password):
-        return jsonify({'message': 'Invalid credentials'}), 401
+        return jsonify({'message': 'Invalid credentials'}), 400
 
     access_token = create_access_token(identity=user.id)
     monthlyIncome = user.monthly_income
