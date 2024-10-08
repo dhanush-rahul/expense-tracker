@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import Modal from '../components/Modal'; // Assuming you have a Modal component
 
 const axiosInstance = axios.create({
-  baseURL: 'https://expense-tracker-backend-flask.onrender.com/api',
+  baseURL: 'https://expense-tracker-cpg9.vercel.app/api',
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*'
