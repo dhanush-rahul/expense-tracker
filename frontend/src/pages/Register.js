@@ -22,11 +22,11 @@ const Register = () => {
     e.preventDefault();
     if (password !== confirmPassword) {
       console.error('Passwords do not match');
-      navigate('/dashboard');
     }
     try {
       await axiosInstance.post('/auth/register', { email, password, monthlyIncome });
       // Redirect to login page
+      navigate('/dashboard');
     } catch (error) {
       console.error('Registration failed:', error);
     }

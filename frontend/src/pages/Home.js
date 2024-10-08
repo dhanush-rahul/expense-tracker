@@ -19,9 +19,9 @@ const Home = () => {
             {/* Header Section */}
             <header className="bg-gray-100 text-gray-800 py-24">
                 <div className="max-w-2xl mx-auto px-4">
-                    <h1 className="text-5xl font-bold mb-6">Less stress when sharing expenses on trips</h1>
+                    <h1 className="text-5xl font-bold mb-6">Less stress tracking your expenses</h1>
                     <p className="text-xl mb-6">
-                        With Splitwise, easily track balances, organize expenses, and pay friends back.
+                        With Expense-Tracker, easily track balances, organize expenses, and check your monthly spends.
                     </p>
                     <div className="space-x-4">
                         <button onClick={loginClicked} className="px-6 py-3 text-lg bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">

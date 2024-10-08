@@ -21,7 +21,6 @@ const Login = () => {
     try {
       const response = await axiosInstance.post('/auth/login', { email, password });
       localStorage.setItem('token', response.data.access_token); // Store JWT
-      console.log(response.data.token);
       navigate('/dashboard');
     } catch (error) {
       console.error('Login failed:', error);
@@ -71,6 +70,9 @@ const Login = () => {
           <div className="text-center">
             <a href="/forgot-password" className="text-sm text-green-600 hover:underline font-bold">
               Forgot your password?
+            </a>
+            <a href="/register" className="text-sm text-green-600 hover:underline font-bold">
+              Register Now
             </a>
           </div>
 

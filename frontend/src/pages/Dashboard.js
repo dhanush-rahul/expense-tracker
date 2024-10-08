@@ -53,7 +53,6 @@ const Dashboard = () => {
     const response = await axiosInstance.get('/getUserMonthlyIncome', {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(response.data);
     setMonthlyIncome(response.data.monthly_income);
     }
     catch(error){
