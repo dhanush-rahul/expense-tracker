@@ -10,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [captchaValue, setCaptchaValue] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
