@@ -78,7 +78,9 @@ const Login = () => {
             <a href="/forgot-password" className="text-sm text-green-600 hover:underline font-bold">
               Forgot your password?
             </a>
-            <span></span>
+            <span> 
+              
+            </span>
             <a href="/register" className="text-sm text-green-600 hover:underline font-bold">
               Register Now
             </a>

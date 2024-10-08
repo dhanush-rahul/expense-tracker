@@ -13,7 +13,6 @@ const Register = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (isAuthenticated()) {
-
       // If authenticated, redirect to dashboard or any other page
       navigate('/dashboard');
     }
@@ -26,7 +25,7 @@ const Register = () => {
     try {
       await axiosInstance.post('/auth/register', { email, password, monthlyIncome });
       // Redirect to login page
-      navigate('/dashboard');
+      navigate('/login');
     } catch (error) {
       console.error('Registration failed:', error);
     }
