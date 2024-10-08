@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from flask_mail import Mail
-
+import os
 db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
@@ -16,6 +16,9 @@ def create_app():
     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"]
 }})
+    # Set a different path for the instance folder or use a temporary directory
+    app.instance_path = os.getenv("INSTANCE_PATH", "/tmp")
+
     # Load configurations from config.py
     app.config.from_object('config.Config')
 
@@ -28,5 +31,7 @@ def create_app():
     # Register blueprints (routes)
     from app.routes import api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
-
+    # Avoid creating the instance folder if it doesn't exist
+    if not os.path.exists(app.instance_path):
+        app.instance_path = "/tmp"  # Use the temporary directory
     return app

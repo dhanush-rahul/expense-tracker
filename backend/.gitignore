@@ -22,3 +22,4 @@ instance/expenses.db
 
 # Environment Variables
 .env
+.vercel
