@@ -21,7 +21,7 @@ const categoryIcons = {
 const ExpenseList = ({ expenses, onEdit, onDelete }) => {
     return (
       <div className="max-h-[29rem] overflow-y-auto">
-        {expenses.map((expense) => (
+        {(expenses && expenses.lenght > 0)} ? {expenses.map((expense) => (
           <div key={expense.id} className="flex items-center justify-between border-b py-4 pr-5">
             <div className="flex items-center">
               {/* Category Icon */}
@@ -60,7 +60,11 @@ const ExpenseList = ({ expenses, onEdit, onDelete }) => {
             </div>
           </div>
           </div>
-        ))}
+        ))} : {
+          <div>
+            No expenses available
+          </div>
+        }
       </div>
     );
   };
