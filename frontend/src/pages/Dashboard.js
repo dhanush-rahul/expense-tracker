@@ -7,6 +7,7 @@ import Modal from '../components/Modal';
 import IncomeSavings from '../components/Expenses/IncomeSavings';
 import FloatingButton from '../components/FloatingButton';
 import useDashboardData from '../hooks/useDashboardData';
+import axiosInstance from '../utils/axiosInstance';
 
 const Dashboard = () => {
   const { expenses, monthlyIncome, setExpenses } = useDashboardData();
