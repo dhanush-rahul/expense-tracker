@@ -17,11 +17,11 @@ const categoryIcons = {
   Rent: faHome,
   Subscriptions: faTv,
 };
-
 const ExpenseList = ({ expenses, onEdit, onDelete }) => {
-    return (
-      <div className="max-h-[29rem] overflow-y-auto">
-        {(expenses && expenses.lenght > 0)} ? {expenses.map((expense) => (
+  return (
+    <div className="max-h-[29rem] overflow-y-auto">
+      {expenses && expenses.length > 0 ? (
+        expenses.map((expense) => (
           <div key={expense.id} className="flex items-center justify-between border-b py-4 pr-5">
             <div className="flex items-center">
               {/* Category Icon */}
@@ -30,43 +30,43 @@ const ExpenseList = ({ expenses, onEdit, onDelete }) => {
                   <FontAwesomeIcon icon={categoryIcons[expense.category]} />
                 </span>
               </div>
-  
+
               {/* Expense Info */}
               <div>
                 <p className="text-gray-800 font-medium">{expense.description}</p>
                 <p className="text-gray-500 text-sm">{new Date(expense.date).toLocaleDateString()}</p>
               </div>
             </div>
-  
-            {/* Amount and Buttons */}
-          <div className="text-right">
-            <p className="text-gray-800 font-bold">CAD {expense.amount.toFixed(2)}</p>
-            <p className="text-gray-500 text-sm">{expense.category}</p>
 
-            {/* Edit and Delete Buttons */}
-            <div className="flex gap-2 mt-2">
-              <button
-                className="text-sm px-4 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-                onClick={() => onEdit(expense)}
-              >
-                <FontAwesomeIcon icon={faEdit} size="lg" />
-              </button>
-              <button
-                className="text-sm px-4 py-1 bg-red-500 text-white rounded-md hover:bg-red-700"
-                onClick={() => onDelete(expense.id)}
-              >
-                <FontAwesomeIcon icon={faTrash} size="lg" />
-              </button>
+            {/* Amount and Buttons */}
+            <div className="text-right">
+              <p className="text-gray-800 font-bold">CAD {expense.amount.toFixed(2)}</p>
+              <p className="text-gray-500 text-sm">{expense.category}</p>
+
+              {/* Edit and Delete Buttons */}
+              <div className="flex gap-2 mt-2">
+                <button
+                  className="text-sm px-4 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700"
+                  onClick={() => onEdit(expense)}
+                >
+                  <FontAwesomeIcon icon={faEdit} size="lg" />
+                </button>
+                <button
+                  className="text-sm px-4 py-1 bg-red-500 text-white rounded-md hover:bg-red-700"
+                  onClick={() => onDelete(expense.id)}
+                >
+                  <FontAwesomeIcon icon={faTrash} size="lg" />
+                </button>
+              </div>
             </div>
           </div>
-          </div>
-        ))} : {
-          <div>
-            No expenses available
-          </div>
-        }
-      </div>
-    );
-  };
+        ))
+      ) : (
+        <div className="text-center text-gray-600">No expenses available</div>
+      )}
+    </div>
+  );
+};
+
   
   export default ExpenseList;
