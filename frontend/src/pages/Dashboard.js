@@ -10,7 +10,7 @@ import useDashboardData from '../hooks/useDashboardData';
 import axiosInstance from '../utils/axiosInstance';
 
 const Dashboard = () => {
-  const { expenses,  monthlyIncome, isLoading, error } = useDashboardData();
+  const { expenses, setExpenses,  monthlyIncome, isLoading, error } = useDashboardData();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentExpense, setCurrentExpense] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(() => {
