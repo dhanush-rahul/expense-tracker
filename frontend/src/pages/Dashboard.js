@@ -19,7 +19,7 @@ const Dashboard = () => {
     const month = String(now.getMonth() + 1).padStart(2, '0');
     return `${year}-${month}`;
   });
-  const uniqueMonths = [...new Set(expenses.map(expense => expense.date.slice(0, 7)))];
+  const uniqueMonths = (expenses && expenses.length > 0) ? [...new Set(expenses.map(expense => expense.date.slice(0, 7)))] : [];
 
   const handleAddExpense = () => {
     setCurrentExpense(null);
