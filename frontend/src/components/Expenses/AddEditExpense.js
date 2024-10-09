@@ -1,8 +1,7 @@
 // pages/AddEditExpense.js
-import React, { useState, useRef, useEffect } from 'react';
-import axios from '../services/api';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../utils/axiosInstance';
+import axiosInstance from '../../utils/axiosInstance';
 
 const AddEditExpense = ({ existingExpense = false, onSubmitSuccess }) => {
   const [amount, setAmount] = useState(existingExpense?.amount || '');

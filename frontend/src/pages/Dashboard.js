@@ -4,12 +4,9 @@ import axiosInstance from '../utils/axiosInstance';
 import MonthlyReport from '../components/Reports/MonthlyReport';
 import ExpenseList from '../components/Expenses/ExpenseList';
 import CategoricalReport from '../components/Reports/CategoricalReport';
-import AddEditExpense from './AddEditExpense';
+import AddEditExpense from '../components/Expenses/AddEditExpense';
 import Modal from '../components/Modal';
 import IncomeSavings from '../components/Expenses/IncomeSavings';
-import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import FloatingButton from '../components/FloatingButton';
 
 const Dashboard = () => {
