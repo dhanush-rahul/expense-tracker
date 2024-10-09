@@ -10,7 +10,7 @@ import useDashboardData from '../hooks/useDashboardData';
 import axiosInstance from '../utils/axiosInstance';
 
 const Dashboard = () => {
-  const { expenses, monthlyIncome, setExpenses } = useDashboardData();
+  const { expenses,  monthlyIncome, isLoading, error } = useDashboardData();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentExpense, setCurrentExpense] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(() => {
@@ -51,6 +51,13 @@ const Dashboard = () => {
       ? <p className="text-center text-gray-600">No expenses available.</p>
       : <ExpenseList expenses={expenses} onEdit={handleEditExpense} onDelete={handleDeleteExpense} />
   );
+  if (isLoading) {
+    return <div>Loading...</div>; // You can replace this with a proper loading spinner
+  }
+
+  if (error) {
+    return <div>{error}</div>; // Display the error message if any
+  }
 
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-4 p-6 bg-gradient-to-b from-gray-200 to-gray-300">
