@@ -8,6 +8,7 @@ import IncomeSavings from '../components/Expenses/IncomeSavings';
 import FloatingButton from '../components/FloatingButton';
 import useDashboardData from '../hooks/useDashboardData';
 import axiosInstance from '../utils/axiosInstance';
+import { PacmanLoader } from 'react-spinners';
 
 const Dashboard = () => {
   const { expenses, setExpenses,  monthlyIncome, isLoading, error } = useDashboardData();
@@ -52,7 +53,13 @@ const Dashboard = () => {
       : <ExpenseList expenses={expenses} onEdit={handleEditExpense} onDelete={handleDeleteExpense} />
   );
   if (isLoading) {
-    return <div>Loading...</div>; // You can replace this with a proper loading spinner
+    return    <div className="flex justify-center items-center min-h-screen">
+ <PacmanLoader
+    color="#b6ffa7"
+    margin={2}
+    size={25}
+  />  
+  </div> ; // You can replace this with a proper loading spinner
   }
 
   if (error) {
