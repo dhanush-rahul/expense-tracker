@@ -13,8 +13,8 @@ def create_app():
     app = Flask(__name__)
     # Update CORS settings for preflight requests
     CORS(app, resources={r"/api/*": {
-        # "origins": "https://expense-tracker-topaz-rho.vercel.app",
-        "origins":"http://localhost:3000",
+        "origins": "https://expense-tracker-topaz-rho.vercel.app",
+        # "origins":"http://localhost:3000",
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers"],
         "supports_credentials": True,
@@ -44,8 +44,8 @@ def create_app():
         
     @app.after_request
     def apply_cors_headers(response):
-        # response.headers["Access-Control-Allow-Origin"] = "https://expense-tracker-topaz-rho.vercel.app"  # Allowed frontend origin
-        response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"  # Allowed frontend origin
+        response.headers["Access-Control-Allow-Origin"] = "https://expense-tracker-topaz-rho.vercel.app"  # Allowed frontend origin
+        # response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"  # Allowed frontend origin
         response.headers["Access-Control-Allow-Credentials"] = "true"  # Allow credentials (cookies, etc.)
         response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"  # Allowed headers
         response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"  # Allowed methods
