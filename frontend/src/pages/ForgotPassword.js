@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axiosInstance from '../utils/axiosInstance'; // Adjust the import according to your setup
 import { useNavigate } from 'react-router-dom';
+import EmailInputBox from '../components/Auth/EmailInputBox';
+import OtpBox from '../components/Auth/OtpBox';
+import PasswordResetBox from '../components/Auth/PasswordResetBox';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -12,6 +15,7 @@ const ForgotPassword = () => {
   const [otpError, setOtpError] = useState('');
 
   const navigate = useNavigate();
+
   // Function to send OTP
   const handleSendOtp = async () => {
     try {
@@ -58,95 +62,33 @@ const ForgotPassword = () => {
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
           {isOtpVerified ? 'Reset Password' : 'Forgot Password'}
         </h2>
+        
         {!otpSent && (
-          <>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">
-                Email address
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                placeholder="Email address"
-                required
-              />
-            </div>
-            <button
-              className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-500 transition-all"
-              onClick={handleSendOtp}
-            >
-              Send OTP
-            </button>
-          </>
+          <EmailInputBox 
+            email={email}
+            setEmail={setEmail}
+            handleSendOtp={handleSendOtp}
+          />
         )}
-
+        
         {otpSent && !isOtpVerified && (
-          <>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="otp">
-                Enter OTP
-              </label>
-              <input
-                type="text"
-                id="otp"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                placeholder="OTP"
-                required
-              />
-            </div>
-            {otpError && <p className="text-red-500 text-sm">{otpError}</p>}
-            <button
-              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-500 transition-all"
-              onClick={handleVerifyOtp}
-            >
-              Verify OTP
-            </button>
-          </>
+          <OtpBox 
+            otp={otp}
+            setOtp={setOtp}
+            otpError={otpError}
+            handleVerifyOtp={handleVerifyOtp}
+          />
         )}
-
+        
         {isOtpVerified && (
-          <>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="newPassword">
-                New Password
-              </label>
-              <input
-                type="password"
-                id="newPassword"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                placeholder="New Password"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="confirmPassword">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                placeholder="Confirm Password"
-                required
-              />
-            </div>
-            {otpError && <p className="text-red-500 text-sm mb-2">{otpError}</p>}
-            <button
-              className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-500 transition-all"
-              onClick={handleResetPassword}
-            >
-              Reset Password
-            </button>
-          </>
+          <PasswordResetBox
+            newPassword={newPassword}
+            setNewPassword={setNewPassword}
+            confirmPassword={confirmPassword}
+            setConfirmPassword={setConfirmPassword}
+            otpError={otpError}
+            handleResetPassword={handleResetPassword}
+          />
         )}
       </div>
     </div>
