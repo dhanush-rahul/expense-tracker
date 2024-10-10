@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInstance';
+import { toast } from 'react-toastify';
 
 const AddEditExpense = ({ existingExpense = false, onSubmitSuccess }) => {
   const [amount, setAmount] = useState(existingExpense?.amount || '');
@@ -50,6 +51,7 @@ const handleSubmit = async (e) => {
     }
     
     // Notify parent component (Dashboard) of success
+    toast.success("Expense added successfully");
     onSubmitSuccess(); // Call the success function
   } catch (error) {
     console.error('Error submitting expense:', error);

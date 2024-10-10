@@ -20,6 +20,7 @@ const IncomeSavings = ({ monthlyIncome, expenses, onUpdateIncome }) => {
 
   const handleMonthlyIncomeChange = (e) => {
     setNewMonthlyIncome(e.target.value);
+    setIsModalOpen(false);
   };
 
   const handleSubmit = async (e) => {
