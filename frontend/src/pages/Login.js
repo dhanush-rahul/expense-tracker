@@ -12,7 +12,6 @@ const Login = () => {
     email: '',
     password: '',
     errorMessage: '',
-    isModalOpen: false,
   });
 
   const navigate = useNavigate();
@@ -39,34 +38,16 @@ const Login = () => {
       setLoginData((prevData) => ({
         ...prevData,
         errorMessage: message,
-        isModalOpen: true,
       }));
     }
   };
 
-  const closeModal = () => {
-    setLoginData((prevData) => ({ ...prevData, isModalOpen: false }));
-  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
         <LoginBox loginData={loginData} setLoginData={setLoginData} handleLogin={handleLogin} />
       </div>
-
-      {/* Modal for displaying error message */}
-      <Modal isOpen={loginData.isModalOpen} onClose={closeModal}>
-        <div className="p-4">
-          <h3 className="text-lg font-bold">Login Error</h3>
-          <p className="mt-2 text-sm">{loginData.errorMessage}</p>
-          <button
-            className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md"
-            onClick={closeModal}
-          >
-            Close
-          </button>
-        </div>
-      </Modal>
       <ToastContainer/>
     </div>
   );

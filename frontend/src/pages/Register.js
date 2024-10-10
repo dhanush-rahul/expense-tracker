@@ -4,7 +4,7 @@ import axiosInstance from '../utils/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../utils/auth';
 import RegisterBox from '../components/Auth/RegisterBox';
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
@@ -50,6 +50,7 @@ const Register = () => {
       <div className="w-full max-w-md mx-10 p-8 bg-white rounded-lg shadow-md">
         <RegisterBox formData={formData} setFormData={setFormData} handleRegister={handleRegister} />
       </div>
+      <ToastContainer/>
     </div>
   );
 };

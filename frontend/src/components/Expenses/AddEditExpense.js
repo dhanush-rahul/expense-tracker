@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInstance';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 const AddEditExpense = ({ existingExpense = false, onSubmitSuccess }) => {
   const [amount, setAmount] = useState(existingExpense?.amount || '');
@@ -26,6 +26,7 @@ const AddEditExpense = ({ existingExpense = false, onSubmitSuccess }) => {
       setCategories(response.data); // Assuming the API returns an array of categories
     } catch (error) {
       console.error('Error fetching categories:', error);
+      toast.error('Error fetching categories');
     }
   };
 
@@ -55,6 +56,7 @@ const handleSubmit = async (e) => {
     onSubmitSuccess(); // Call the success function
   } catch (error) {
     console.error('Error submitting expense:', error);
+    toast.error(error);
   }
 };
 
@@ -100,6 +102,7 @@ const handleSubmit = async (e) => {
       </form>
     </div>
   </div>
+  <ToastContainer/>
   </div>
   );
 };
