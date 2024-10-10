@@ -4,6 +4,8 @@ import axiosInstance from '../utils/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../utils/auth';
 import RegisterBox from '../components/Auth/RegisterBox';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -26,6 +28,7 @@ const Register = () => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       console.error('Passwords do not match');
+      toast.error('Passwords do not match');
       return;
     }
     try {
@@ -34,9 +37,11 @@ const Register = () => {
         password: formData.password,
         monthlyIncome: formData.monthlyIncome,
       });
+      toast.success('Registration successful! Please login.');
       navigate('/login');
     } catch (error) {
       console.error('Registration failed:', error);
+      toast.error(error);
     }
   };
 

@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../utils/auth';
 import Modal from '../components/Modal';
 import LoginBox from '../components/Auth/LoginBox';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -29,9 +31,11 @@ const Login = () => {
         password: loginData.password,
       });
       localStorage.setItem('token', response.data.access_token);
+      toast.success("Login successful")
       navigate('/dashboard');
     } catch (error) {
       const message = error.response?.data?.message || 'Login failed. Please try again.';
+      toast.error(message)
       setLoginData((prevData) => ({
         ...prevData,
         errorMessage: message,

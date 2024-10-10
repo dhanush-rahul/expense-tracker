@@ -4,8 +4,8 @@ import axiosInstance from '../utils/axiosInstance';
 const useDashboardData = () => {
   const [expenses, setExpenses] = useState([]);
   const [monthlyIncome, setMonthlyIncome] = useState(0);
-  const [isLoading, setIsLoading] = useState(true); // Add a loading state
-  const [error, setError] = useState(null); // Add an error state
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,35 +15,28 @@ const useDashboardData = () => {
         return;
       }
 
-      setIsLoading(true); // Set loading to true at the start
-      setError(null); // Clear any previous errors
+      setIsLoading(true);
+      setError(null); // Clear any existing errors before new fetch
 
-      // Fetch expenses data
-      const fetchExpenses = async () => {
-        try {
-          const response = await axiosInstance.get('/expenses', { headers: { Authorization: `Bearer ${token}` } });
-          setExpenses(response.data);
-        } catch (error) {
-          console.error('Error fetching expenses:', error);
-          setError('Failed to fetch expenses');
-        }
-      };
+      try {
+        // Fetch Expenses
+        const expensesResponse = await axiosInstance.get('/expenses', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setExpenses(expensesResponse.data);
 
-      // Fetch monthly income data
-      const fetchMonthlyIncome = async () => {
-        try {
-          const response = await axiosInstance.get('/getUserMonthlyIncome', { headers: { Authorization: `Bearer ${token}` } });
-          setMonthlyIncome(response.data.monthly_income);
-        } catch (error) {
-          console.error('Error fetching monthly income:', error);
-          setError('Failed to fetch monthly income');
-        }
-      };
+        // Fetch Monthly Income
+        const incomeResponse = await axiosInstance.get('/getUserMonthlyIncome', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setMonthlyIncome(incomeResponse.data.monthly_income);
 
-      // Call both functions
-      await Promise.all([fetchExpenses(), fetchMonthlyIncome()]);
-
-      setIsLoading(false); // Set loading to false when both requests are done
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError('Failed to fetch data. Please try again later.');
+      } finally {
+        setIsLoading(false); // Ensure loading is stopped regardless of success or failure
+      }
     };
 
     fetchData();
