@@ -5,15 +5,21 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from flask_mail import Mail
 import os
+from flask import request
+
 db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
-
+ALLOWED_ORIGINS = [
+    "https://expense-tracker-topaz-rho.vercel.app",  # Production web app
+    "http://192.168.2.20:8081",  # Metro bundler for React Native
+    "http://192.168.2.20:19000",  # Expo Go app for React Native
+]
 def create_app():
     app = Flask(__name__)
     # Update CORS settings for preflight requests
     CORS(app, resources={r"/api/*": {
-        "origins": "https://expense-tracker-topaz-rho.vercel.app",
+        "origins": ["https://expense-tracker-topaz-rho.vercel.app", "http://192.168.2.20:8081", "http://192.168.2.20:19000"],
         # "origins":"http://localhost:3000",
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers"],
@@ -44,7 +50,8 @@ def create_app():
         
     @app.after_request
     def apply_cors_headers(response):
-        response.headers["Access-Control-Allow-Origin"] = "https://expense-tracker-topaz-rho.vercel.app"  # Allowed frontend origin
+        origin = request.headers.get('Origin')
+        response.headers["Access-Control-Allow-Origin"] = origin  # Allowed frontend origin
         # response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"  # Allowed frontend origin
         response.headers["Access-Control-Allow-Credentials"] = "true"  # Allow credentials (cookies, etc.)
         response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"  # Allowed headers
