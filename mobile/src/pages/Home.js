@@ -1,20 +1,20 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
   const navigation = useNavigation();
 
-  const loginClicked = (e) => {
+  const loginClicked = () => {
     navigation.navigate('Login');
   };
 
-  const signUpClicked = (e) => {
+  const signUpClicked = () => {
     navigation.navigate('Register');
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {/* Header Section */}
       <View style={styles.headerSection}>
         <Text style={styles.title}>Less stress tracking your expenses</Text>
@@ -47,7 +47,7 @@ const Home = () => {
       <View style={styles.footer}>
         <Text style={styles.footerText}>© 2024 Expense-Tracker</Text>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -63,7 +63,8 @@ const Section = ({ bgColor, text, imageSrc }) => (
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
+    justifyContent: 'flex-start',
     backgroundColor: '#f0f0f0',
   },
   headerSection: {
