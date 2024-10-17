@@ -3,7 +3,6 @@ from datetime import timedelta
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'my_secret_key')
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///expenses.db'  # Use SQLite for simplicity
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'my_jwt_secret_key')
     CATEGORIES = ['Entertainment', 'Food', 'Utilities', 'Transportation', 'Rent', 'Subscriptions']
@@ -16,3 +15,7 @@ class Config:
     MAIL_USERNAME='dhanushrahul555@gmail.com'
     MAIL_PASSWORD='feht haht vadr qpvk'
     MAIL_DEFAULT_SENDER = 'dhanushrahul555@gmail.com'
+
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres.xfceexyyklzudavgzril:KmPLpQASnQOl1jbv@aws-0-ca-central-1.pooler.supabase.com:6543/postgres'
+
+    # app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}'

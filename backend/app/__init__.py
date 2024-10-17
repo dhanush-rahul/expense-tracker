@@ -17,6 +17,7 @@ ALLOWED_ORIGINS = [
 ]
 def create_app():
     app = Flask(__name__)
+    migrate = Migrate(app, db)
     # Update CORS settings for preflight requests
     CORS(app, resources={r"/api/*": {
         "origins": ["https://expense-tracker-topaz-rho.vercel.app", "http://192.168.2.20:8081", "http://192.168.2.20:19000"],

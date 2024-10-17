@@ -20,7 +20,7 @@ const IncomeSavings = ({ monthlyIncome, expenses, onUpdateIncome }) => {
 
   const handleMonthlyIncomeChange = (e) => {
     setNewMonthlyIncome(e.target.value);
-    setIsModalOpen(false);
+    // setIsModalOpen(false);
   };
 
   const handleSubmit = async (e) => {
@@ -85,7 +85,7 @@ const IncomeSavings = ({ monthlyIncome, expenses, onUpdateIncome }) => {
           <h3 className="text-xl font-bold mb-4">Edit Monthly Income</h3>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="monthlyIncome">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
                 Monthly Income
               </label>
               <input

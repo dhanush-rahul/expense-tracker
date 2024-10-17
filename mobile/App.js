@@ -4,8 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Import screens (equivalent to your 'pages' in web)
 // import Login from './pages/Login';
-// import Register from './src/pages/Register';
-// import Dashboard from './pages/Dashboard';
+import Register from './src/pages/Register';
+import Dashboard from './src/pages/Dashboard';
 import Home from './src/pages/Home';
 // import ForgotPassword from './pages/ForgotPassword';
 import Toast from 'react-native-toast-message';
@@ -20,9 +20,9 @@ const App = () => {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Login" component={Login} />
-        {/* <Stack.Screen name="Register" component={Register} /> */}
-        {/* <Stack.Screen name="Dashboard" component={Dashboard} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPassword} /> */}
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
+        {/* <Stack.Screen name="ForgotPassword" component={ForgotPassword} /> */}
       </Stack.Navigator>
       <Toast/>
     </NavigationContainer>
