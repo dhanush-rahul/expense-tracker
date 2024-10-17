@@ -1,8 +1,14 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useNavigate } from "react-router-dom";
+import { isAuthenticated } from "../utils/auth";
 
 const Home = () => {
     const navigate = useNavigate();
+    useEffect(() => {
+        if (isAuthenticated()) {
+          navigate('/dashboard');
+        }
+      }, [navigate]);
 
     const loginClicked = async(e) => {
         e.preventDefault();

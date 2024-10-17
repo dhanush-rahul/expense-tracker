@@ -9,6 +9,7 @@ import FloatingButton from '../components/FloatingButton';
 import useDashboardData from '../hooks/useDashboardData';
 import axiosInstance from '../utils/axiosInstance';
 import { PacmanLoader } from 'react-spinners';
+import Report from '../components/Reports/Report';
 
 const Dashboard = () => {
   const { expenses, setExpenses,  monthlyIncome, setMonthlyIncome, isLoading, error } = useDashboardData();
@@ -102,12 +103,10 @@ const Dashboard = () => {
             ))}
           </select>
         )}
-        <div className="flex-1 max-h-[300px] mb-4 overflow-auto flex justify-center items-center">
-          {expenses.length > 0 ? <MonthlyReport expenses={expenses} selectedMonth={selectedMonth} /> : <h4>No expenses available.</h4>}
+        <div className="flex mb-4 overflow-auto flex justify-center items-center">
+          {expenses.length > 0 ? <Report expenses={expenses} selectedMonth={selectedMonth} /> : <h4>No expenses available.</h4>}
         </div>
-        <div className="flex-1 max-h-[300px] flex justify-center items-center">
-          {expenses.length > 0 ? <CategoricalReport expenses={expenses} selectedMonth={selectedMonth} /> : <h4>No expenses available.</h4>}
-        </div>
+        
       </div>
 
       {/* Modal for Add/Edit Expense */}

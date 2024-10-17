@@ -31,7 +31,11 @@ const Login = () => {
       });
       localStorage.setItem('token', response.data.access_token);
       toast.success("Login successful")
-      navigate('/dashboard');
+      // Delay navigation to allow toast to appear
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
+      
     } catch (error) {
       const message = error.response?.data?.message || 'Login failed. Please try again.';
       toast.error(message)

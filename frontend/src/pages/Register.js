@@ -38,7 +38,9 @@ const Register = () => {
         monthlyIncome: formData.monthlyIncome,
       });
       toast.success('Registration successful! Please login.');
-      navigate('/login');
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
     } catch (error) {
       console.error('Registration failed:', error);
       toast.error(error);

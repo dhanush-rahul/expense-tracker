@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import Modal from '../Modal';
+import Modal from '../Modal'; // Assuming you have a Modal component
 import axiosInstance from '../../utils/axiosInstance';
-import { Doughnut } from 'react-chartjs-2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-
 const IncomeSavings = ({ monthlyIncome, expenses, onUpdateIncome }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newMonthlyIncome, setNewMonthlyIncome] = useState(monthlyIncome); // Pre-fill with current value
+  const [newMonthlyIncome, setNewMonthlyIncome] = useState(monthlyIncome);
+
+  const spentAmount = (expenses && expenses.length) ? expenses.reduce((sum, expense) => sum + expense.amount, 0) : 0;
+  const remainingAmount = monthlyIncome - spentAmount;
 
   const openModal = () => {
-    setNewMonthlyIncome(monthlyIncome); // Set the pre-filled value
+    setNewMonthlyIncome(monthlyIncome);
     setIsModalOpen(true);
   };
 
@@ -20,92 +21,93 @@ const IncomeSavings = ({ monthlyIncome, expenses, onUpdateIncome }) => {
 
   const handleMonthlyIncomeChange = (e) => {
     setNewMonthlyIncome(e.target.value);
-    // setIsModalOpen(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axiosInstance.post('/setUserMonthlyIncome', { monthly_income: newMonthlyIncome });
-      onUpdateIncome(newMonthlyIncome); // Update the monthly income in the parent component
-      closeModal(); // Close the modal after updating
+      onUpdateIncome(newMonthlyIncome);
+      closeModal();
     } catch (error) {
       console.error('Error updating monthly income:', error);
     }
   };
-
-  const spentAmount = (expenses && expenses.length > 0) ? expenses.reduce((sum, expense) => sum + expense.amount, 0) : 0;
-  const remainingAmount = monthlyIncome - spentAmount;
-
-  const incomeChartData = {
-    labels: ['Spent', 'Remaining'],
-    datasets: [
-      {
-        data: [spentAmount, remainingAmount],
-        backgroundColor: ['#FF6384', '#36A2EB'],
-        hoverBackgroundColor: ['#FF6384', '#36A2EB'],
-      },
-    ],
+  const formatCurrency = (value) => {
+    if (value >= 1000000) {
+      return `$ ${(value / 1000000).toFixed(1)}M`;
+    } else if (value >= 1000) {
+      return `$ ${(value / 1000).toFixed(1)}k`;
+    } else {
+      return `$ ${value.toFixed(2)}`;
+    }
   };
 
   return (
-    <div className="flex flex-col justify-between mx-10">
-      <div className="relative">
-    <h2 className="text-xl font-bold text-center mb-4">Your Budget Overview</h2>
-    <button
-      className="absolute top-0 right-0 text-blue-500 hover:underline"
-      onClick={openModal}
-    >
-      <FontAwesomeIcon icon={faEdit} size="lg" />
-    </button>
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      {/* Total Box */}
+      <div className="border-2 border-green-500 rounded-lg flex flex-col items-center justify-center">
+    <div className="w-full bg-teal-500 text-white font-bold p-2 text-center">
+      Total
+    </div>
+    <div className="w-full relative flex flex-col items-center justify-center py-6">
+      <p className="text-4xl text-teal-500">{formatCurrency(monthlyIncome)}</p>
+      <button
+        onClick={openModal}
+        className="absolute top-2 right-2 text-blue-500 hover:underline"
+      >
+        <FontAwesomeIcon icon={faEdit} size="lg" />
+      </button>
+    </div>
+  </div>
+{/* Spent Box */}
+<div className="border-2 border-[rgb(178,57,57)] rounded-lg flex flex-col items-center justify-center">
+    <div className="w-full bg-[rgb(178,57,57)] text-white font-bold p-2 text-center">
+      Spent
+    </div>
+    <div className="w-full flex items-center justify-center py-6">
+      <p className="text-4xl text-[rgb(178,57,57)]">{formatCurrency(spentAmount)}</p>
+    </div>
   </div>
 
-      {/* Chart Box with Small Doughnut */}
-      <div className="items-center mb-4">
-        <div className="w-full text-center">
-          <div className="w-24 h-24 mx-auto">
-            <Doughnut data={incomeChartData} options={{ maintainAspectRatio: false }} />
-          </div>
-        </div>
-      </div>
-
-      {/* Income and Remaining Info */}
-      <div className="text-center">
-        <p className="text-gray-700">
-          <strong>Total Income:</strong> CAD {monthlyIncome}
-        </p>
-        <p className={`text-lg ${remainingAmount >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-          <strong>Remaining:</strong> CAD {remainingAmount.toFixed(2)}
-        </p>
-      </div>
+  {/* Remaining Box */}
+  <div className="border-2 border-[rgb(28,80,164)] rounded-lg flex flex-col items-center justify-center">
+    <div className="w-full bg-[rgb(28,80,164)] text-white font-bold p-2 text-center">
+      Remaining
+    </div>
+    <div className="w-full flex items-center justify-center py-6">
+      <p className="text-4xl text-[rgb(28,80,164)]">{formatCurrency(remainingAmount)}</p>
+    </div>
+  </div>
 
       {/* Modal for Editing Monthly Income */}
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <div className="bg-white p-6 rounded-lg">
-          <h3 className="text-xl font-bold mb-4">Edit Monthly Income</h3>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Monthly Income
-              </label>
-              <input
-                type="number"
-                id="monthlyIncome"
-                value={newMonthlyIncome}
-                onChange={handleMonthlyIncomeChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-500 transition-all"
-            >
-              Update Income
-            </button>
-          </form>
-        </div>
-      </Modal>
+      {isModalOpen && (
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <div className="bg-white p-6 rounded-lg">
+            <h3 className="text-xl font-bold mb-4">Edit Monthly Income</h3>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Monthly Income
+                </label>
+                <input
+                  type="number"
+                  value={newMonthlyIncome}
+                  onChange={handleMonthlyIncomeChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-500"
+              >
+                Update Income
+              </button>
+            </form>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

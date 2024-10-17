@@ -23,7 +23,7 @@ const MonthlyReport = ({ expenses, selectedMonth }) => {
     labels: categories,
     datasets: [
       {
-        label: `Expenses for ${selectedMonth}`,
+        label: 'Expenses by Category',
         data: amountsByCategory,
         backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'],
       },
