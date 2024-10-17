@@ -20,18 +20,18 @@ const CategoricalReport = ({ expenses, selectedMonth }) => {
 
   // Data for the chart
   const data = {
-    labels: categories,
+    labels: categories.length > 0 ? categories : ['No Data'],
     datasets: [
       {
-        data: amountsByCategory,
+        data: amountsByCategory.length > 0 ? amountsByCategory : [0],
       },
     ],
   };
 
   // Chart configuration options
   const chartConfig = {
-    backgroundGradientFrom: "#fff",
-    backgroundGradientTo: "#fff",
+    backgroundGradientFrom: "#ffffff",
+    backgroundGradientTo: "#ffffff",
     decimalPlaces: 2, // Optional, rounds the chart data
     color: (opacity = 1) => `rgba(0, 123, 255, ${opacity})`, // Blue bars
     labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Black labels

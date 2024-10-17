@@ -9,6 +9,7 @@ import IncomeSavings from '../components/Expenses/IncomeSavings';
 import useDashboardData from '../hooks/useDashboardData';
 import axiosInstance from '../utils/axiosInstance';
 import FloatingButton from '../components/FloatingButton';
+import ExpenseList from '../components/Expenses/ExpenseList';
 
 const Dashboard = () => {
   const { expenses, setExpenses, monthlyIncome, isLoading, error } = useDashboardData();
@@ -66,7 +67,7 @@ const Dashboard = () => {
       {/* Expenses List Section */}
       <View style={styles.section}>
         <Text style={styles.heading}>Your Expenses</Text>
-        <ExpenseLi expenses={expenses} onEdit={handleEditExpense} onDelete={handleDeleteExpense} />
+        <ExpenseList expenses={expenses} onEdit={handleEditExpense} onDelete={handleDeleteExpense} />
         <TouchableOpacity style={styles.addButton} onPress={handleAddExpense}>
           <Text style={styles.buttonText}>Add Expense</Text>
         </TouchableOpacity>

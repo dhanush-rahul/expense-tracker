@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
-import { DoughnutChart } from 'react-native-chart-kit';
+import { PieChart } from 'react-native-chart-kit';  // Using PieChart as a substitute for DoughnutChart
+import { Dimensions } from 'react-native';
 import Modal from '../Modal';
 
 const IncomeSavings = ({ monthlyIncome, expenses, onUpdateIncome }) => {
@@ -10,20 +11,41 @@ const IncomeSavings = ({ monthlyIncome, expenses, onUpdateIncome }) => {
   const spentAmount = expenses.reduce((sum, expense) => sum + expense.amount, 0);
   const remainingAmount = monthlyIncome - spentAmount;
 
-  const incomeChartData = {
-    labels: ['Spent', 'Remaining'],
-    datasets: [
-      {
-        data: [spentAmount, remainingAmount],
-        backgroundColor: ['#FF6384', '#36A2EB'],
-      },
-    ],
-  };
+  const incomeChartData = [
+    {
+      name: 'Spent',
+      amount: spentAmount,
+      color: '#FF6384',
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 15
+    },
+    {
+      name: 'Remaining',
+      amount: remainingAmount,
+      color: '#36A2EB',
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 15
+    }
+  ];
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Your Budget Overview</Text>
-      <DoughnutChart data={incomeChartData} width={200} height={200} />
+      <PieChart
+        data={incomeChartData}
+        width={Dimensions.get('window').width - 50} // from react-native
+        height={200}
+        chartConfig={{
+          backgroundColor: '#fff',
+          backgroundGradientFrom: '#fff',
+          backgroundGradientTo: '#fff',
+          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`
+        }}
+        accessor="amount"
+        backgroundColor="transparent"
+        paddingLeft="15"
+        absolute
+      />
 
       <Text>Total Income: CAD {monthlyIncome}</Text>
       <Text>Remaining: CAD {remainingAmount.toFixed(2)}</Text>
@@ -35,8 +57,15 @@ const IncomeSavings = ({ monthlyIncome, expenses, onUpdateIncome }) => {
       {/* Modal */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <Text>Edit your monthly income</Text>
-        <TextInput value={newMonthlyIncome.toString()} onChangeText={setNewMonthlyIncome} />
-        <Button title="Save" onPress={() => onUpdateIncome(newMonthlyIncome)} />
+        <TextInput
+          value={newMonthlyIncome.toString()}
+          onChangeText={setNewMonthlyIncome}
+          keyboardType="numeric"
+        />
+        <Button title="Save" onPress={() => {
+          onUpdateIncome(newMonthlyIncome);
+          setIsModalOpen(false);
+        }} />
       </Modal>
     </View>
   );

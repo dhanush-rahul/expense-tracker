@@ -1,24 +1,27 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../utils/axiosInstance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';  // Use React Navigation for navigation
 
 const useDashboardData = () => {
   const [expenses, setExpenses] = useState([]);
   const [monthlyIncome, setMonthlyIncome] = useState(0);
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
+  const navigation = useNavigation(); // Use navigation for redirection
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        window.location.href = '/login';
-        return;
-      }
-
-      setIsLoading(true);
-      setError(null); // Clear any existing errors before new fetch
-
       try {
+        const token = await AsyncStorage.getItem('token');  // Await AsyncStorage call
+        if (!token) {
+          navigation.navigate('Login');  // Redirect to login screen using navigation
+          return;
+        }
+
+        setIsLoading(true);
+        setError(null); // Clear any existing errors before new fetch
+
         // Fetch Expenses
         const expensesResponse = await axiosInstance.get('/expenses', {
           headers: { Authorization: `Bearer ${token}` },
@@ -40,7 +43,7 @@ const useDashboardData = () => {
     };
 
     fetchData();
-  }, []);
+  }, [navigation]);  // Make sure navigation is included as a dependency
 
   return { expenses, monthlyIncome, setExpenses, isLoading, error };
 };

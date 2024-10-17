@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Picker, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { Picker } from '@react-native-picker/picker'; // Updated import
 import axiosInstance from '../../utils/axiosInstance';
 
 const AddEditExpense = ({ existingExpense = false, onSubmitSuccess }) => {
@@ -36,18 +37,46 @@ const AddEditExpense = ({ existingExpense = false, onSubmitSuccess }) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text>{existingExpense ? 'Edit Expense' : 'Add Expense'}</Text>
-      <TextInput placeholder="Amount" value={amount} onChangeText={setAmount} keyboardType="numeric" />
-      <Picker selectedValue={category} onValueChange={setCategory}>
+      <TextInput
+        placeholder="Amount"
+        value={amount}
+        onChangeText={setAmount}
+        keyboardType="numeric"
+        style={styles.input}
+      />
+      <Picker
+        selectedValue={category}
+        onValueChange={setCategory}
+        style={styles.input}
+      >
         {categories.map(cat => (
           <Picker.Item key={cat} label={cat} value={cat} />
         ))}
       </Picker>
-      <TextInput placeholder="Description" value={description} onChangeText={setDescription} />
+      <TextInput
+        placeholder="Description"
+        value={description}
+        onChangeText={setDescription}
+        style={styles.input}
+      />
       <Button title={existingExpense ? 'Edit' : 'Add'} onPress={handleSubmit} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
+  input: {
+    marginVertical: 8,
+    padding: 8,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 4,
+  },
+});
 
 export default AddEditExpense;

@@ -1,16 +1,20 @@
 import React from 'react';
-import { Modal, View, Text, StyleSheet } from 'react-native';
+import { Modal as RNModal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const CustomModal = ({ isOpen, onClose, children }) => {
+const Modal = ({ isOpen, onClose, children }) => {
+  if (!isOpen) return null;
+
   return (
-    <Modal visible={isOpen} transparent={true} animationType="slide">
+    <RNModal transparent={true} animationType="slide" visible={isOpen}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text onPress={onClose} style={styles.closeButton}>×</Text>
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <Text style={styles.closeText}>X</Text>
+          </TouchableOpacity>
           {children}
         </View>
       </View>
-    </Modal>
+    </RNModal>
   );
 };
 
@@ -18,21 +22,23 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: 'white',
+    width: '80%',
     padding: 20,
-    marginHorizontal: 30,
+    backgroundColor: 'white',
     borderRadius: 10,
+    alignItems: 'center',
   },
   closeButton: {
-    position: 'absolute',
-    right: 10,
-    top: 10,
-    fontSize: 24,
-    color: 'gray',
+    alignSelf: 'flex-end',
+  },
+  closeText: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
-export default CustomModal;
+export default Modal;
