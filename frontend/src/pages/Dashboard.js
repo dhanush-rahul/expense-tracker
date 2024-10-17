@@ -11,7 +11,7 @@ import axiosInstance from '../utils/axiosInstance';
 import { PacmanLoader } from 'react-spinners';
 
 const Dashboard = () => {
-  const { expenses, setExpenses,  monthlyIncome, isLoading, error } = useDashboardData();
+  const { expenses, setExpenses,  monthlyIncome, setMonthlyIncome, isLoading, error } = useDashboardData();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentExpense, setCurrentExpense] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(() => {
@@ -46,7 +46,10 @@ const Dashboard = () => {
   const handleMonthChange = (event) => {
     setSelectedMonth(event.target.value);
   };
-
+  // Define onUpdateIncome function to update monthly income state
+  const onUpdateIncome = (newIncome) => {
+    setMonthlyIncome(newIncome);  // Update the monthly income in the parent state
+  };
   const renderExpenseList = () => (
     expenses.length === 0
       ? <p className="text-center text-gray-600">No expenses available.</p>
@@ -72,7 +75,7 @@ const Dashboard = () => {
       <div className="flex flex-col h-full space-y-4">
         {/* Income and Savings Section */}
         <div className="bg-white rounded-lg shadow-md p-8">
-          <IncomeSavings monthlyIncome={monthlyIncome} expenses={expenses} />
+          <IncomeSavings monthlyIncome={monthlyIncome} expenses={expenses} onUpdateIncome={onUpdateIncome} />
         </div>
 
         {/* Expenses List Section */}

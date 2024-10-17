@@ -42,7 +42,7 @@ const useDashboardData = () => {
     fetchData();
   }, []);
 
-  return { expenses, monthlyIncome, setMonthlyIncome, setExpenses, isLoading, error };
+  return { expenses, monthlyIncome, setExpenses, isLoading, error };
 };
 
 export default useDashboardData;

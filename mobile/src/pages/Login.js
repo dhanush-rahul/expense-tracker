@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-// import axiosInstance from '../utils/axiosInstance';  // Assuming this works for React Native
+import axiosInstance from '../utils/axiosInstance';  // Assuming this works for React Native
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { isAuthenticated } from '../utils/auth';
 import { useNavigation } from '@react-navigation/native';
@@ -28,11 +28,13 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-    //   const response = await axiosInstance.post('/auth/login', {
-    //     email: loginData.email,
-    //     password: loginData.password,
-    //   });
-    //   await AsyncStorage.setItem('token', response.data.access_token);
+      const response = await axiosInstance.post('/auth/login', {
+        email: loginData.email,
+        password: loginData.password,
+      });
+      console.log("I'm here")
+
+      await AsyncStorage.setItem('token', response.data.access_token);
       Toast.show({
         type: 'success',
         text1: 'Login successful',
