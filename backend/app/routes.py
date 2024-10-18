@@ -6,6 +6,8 @@ import random
 from flask_mail import Message
 from flask_mail import Mail
 from werkzeug.security import generate_password_hash
+from sqlalchemy import desc
+
 mail = Mail()
 api_bp = Blueprint('api', __name__)
 
@@ -103,7 +105,7 @@ def get_categories():
 def get_expenses():
     try:
         user_id = get_jwt_identity()
-        expenses = Expense.query.filter_by(user_id=user_id).all()
+        expenses = Expense.query.filter_by(user_id=user_id).order_by(desc(Expense.date), desc(Expense.id)).all()
 
         if not expenses:
             return jsonify({'message': 'No expenses found for this user'}), 200
