@@ -22,7 +22,7 @@ const Dashboard = () => {
     return `${year}-${month}`;
   });
   const uniqueMonths = (expenses && expenses.length > 0) ? [...new Set(expenses.map(expense => expense.date.slice(0, 7)))] : [];
-
+  console.log(expenses.map(expense => expense.date.slice(0, 7)))
   const handleAddExpense = () => {
     setCurrentExpense(null);
     setIsModalOpen(true);
@@ -96,12 +96,17 @@ const Dashboard = () => {
         <h2 className="text-2xl font-bold text-center mb-6">Monthly Report</h2>
         {uniqueMonths.length > 0 && (
           <select id="month-select" value={selectedMonth} onChange={handleMonthChange} className="px-4 py-2 border border-gray-300 rounded-md">
-            {uniqueMonths.map(month => (
+          {uniqueMonths.map(month => {
+            const [year, monthNumber] = month.split('-'); // Split the string into year and month
+            const formattedMonth = new Date(year, monthNumber - 1).toLocaleString('default', { month: 'long', year: 'numeric' });
+            
+            return (
               <option key={month} value={month}>
-                {new Date(month).toLocaleString('default', { month: 'long', year: 'numeric' })}
+                {formattedMonth}
               </option>
-            ))}
-          </select>
+            );
+          })}
+        </select>
         )}
         <div className="flex mb-4 overflow-auto flex justify-center items-center">
           {expenses.length > 0 ? <Report expenses={expenses} selectedMonth={selectedMonth} /> : <h4>No expenses available.</h4>}

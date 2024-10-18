@@ -56,8 +56,8 @@ const Report = ({ expenses, selectedMonth }) => {
   {categories.map((category, index) => (
     <div
       key={index}
-      className={`cursor-pointer px-3 py-1 m-2 rounded-lg text-white ${
-        hiddenCategories[category] ? 'bg-transparent text-gray-400 line-through' : ''
+      className={`cursor-pointer px-3 py-1 m-2 rounded-lg ${
+        hiddenCategories[category] ? 'bg-transparent text-gray-400 line-through' : ' text-white'
       }`}
       style={!hiddenCategories[category] ? { backgroundColor: chartData.datasets[0].backgroundColor[index] } : {}}
       onClick={() => toggleCategoryVisibility(category)}
