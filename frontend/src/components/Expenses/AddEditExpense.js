@@ -36,7 +36,7 @@ const AddEditExpense = ({ existingExpense = false, onSubmitSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    const data = { amount, category, date, description }; // Keep the date as a string in 'YYYY-MM-DD' format
+    const data = { amount : parseFloat(amount), category, date, description }; // Keep the date as a string in 'YYYY-MM-DD' format
 
     try {
       if (existingExpense) {

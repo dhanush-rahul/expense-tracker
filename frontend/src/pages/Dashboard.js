@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
-import MonthlyReport from '../components/Reports/MonthlyReport';
-import ExpenseList from '../components/Expenses/ExpenseList';
-import CategoricalReport from '../components/Reports/CategoricalReport';
-import AddEditExpense from '../components/Expenses/AddEditExpense';
-import Modal from '../components/Modal';
-import IncomeSavings from '../components/Expenses/IncomeSavings';
-import FloatingButton from '../components/FloatingButton';
 import useDashboardData from '../hooks/useDashboardData';
 import axiosInstance from '../utils/axiosInstance';
 import { PacmanLoader } from 'react-spinners';
+import IncomeSavings from '../components/Expenses/IncomeSavings';
+import ExpenseList from '../components/Expenses/ExpenseList';
 import Report from '../components/Reports/Report';
+import Modal from '../components/Modal';
+import AddEditExpense from '../components/Expenses/AddEditExpense';
+import FloatingButton from '../components/FloatingButton';
 
 const Dashboard = () => {
-  const { expenses, setExpenses, monthlyIncome, setMonthlyIncome, isLoading, error } = useDashboardData();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentExpense, setCurrentExpense] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(() => {
@@ -21,8 +18,12 @@ const Dashboard = () => {
     const month = String(now.getMonth() + 1).padStart(2, '0');
     return `${year}-${month}`;
   });
+
+  // Fetch data based on the selected month
+  const { expenses, monthlyIncome, spent, setExpenses, setMonthlyIncome, isLoading, error } = useDashboardData(selectedMonth);
+
   const uniqueMonths = (expenses && expenses.length > 0) ? [...new Set(expenses.map(expense => expense.date.slice(0, 7)))] : [];
-  console.log(expenses.map(expense => expense.date.slice(0, 7)))
+
   const handleAddExpense = () => {
     setCurrentExpense(null);
     setIsModalOpen(true);
@@ -40,34 +41,32 @@ const Dashboard = () => {
 
   const handleSubmitSuccess = async () => {
     setIsModalOpen(false);
-    const response = await axiosInstance.get('/expenses');
+    const response = await axiosInstance.get('/expenses', { params: { month: selectedMonth } });
     setExpenses(response.data);
   };
 
   const handleMonthChange = (event) => {
-    setSelectedMonth(event.target.value);
+    setSelectedMonth(event.target.value); // Update the selected month
   };
-  // Define onUpdateIncome function to update monthly income state
+
   const onUpdateIncome = (newIncome) => {
-    setMonthlyIncome(newIncome);  // Update the monthly income in the parent state
+    setMonthlyIncome(newIncome); // Update the monthly income in the parent state
   };
+
   const renderExpenseList = () => (
     expenses.length === 0
       ? <p className="text-center text-gray-600">No expenses available.</p>
       : <ExpenseList expenses={expenses} onEdit={handleEditExpense} onDelete={handleDeleteExpense} />
   );
+
   if (isLoading) {
     return <div className="flex justify-center items-center min-h-screen">
-      <PacmanLoader
-        color="#b6ffa7"
-        margin={2}
-        size={25}
-      />
-    </div>; // You can replace this with a proper loading spinner
+      <PacmanLoader color="#b6ffa7" margin={2} size={25} />
+    </div>;
   }
 
   if (error) {
-    return <div>{error}</div>; // Display the error message if any
+    return <div>{error}</div>;
   }
 
   return (
@@ -98,14 +97,10 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-6 bg-gradient-to-b from-gray-200 to-gray-300 h-[93.5%]">
-        {/* Left Column */}
         <div className="flex flex-col h-full space-y-4 overflow-auto">
-          {/* Income and Savings Section */}
           <div className="bg-white rounded-lg shadow-md p-8">
-            <IncomeSavings monthlyIncome={monthlyIncome} expenses={expenses} onUpdateIncome={onUpdateIncome} />
+            <IncomeSavings monthlyIncome={monthlyIncome} spent={spent} onUpdateIncome={onUpdateIncome} />
           </div>
-
-          {/* Expenses List Section */}
           <div className="bg-white rounded-lg shadow-md p-8 flex flex-col justify-between h-full">
             <h2 className="text-2xl font-bold text-center mb-6">Your Expenses</h2>
             {renderExpenseList()}
@@ -121,7 +116,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Right Column (Reports Section) */}
         <div className="bg-white rounded-lg shadow-md p-8 flex flex-col h-full">
           <h2 className="text-2xl font-bold text-center mb-6">Monthly Report</h2>
           <div className="flex mb-4 overflow-auto justify-center items-center">
@@ -133,7 +127,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Modal for Add/Edit Expense */}
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
           <AddEditExpense existingExpense={currentExpense} onSubmitSuccess={handleSubmitSuccess} />
         </Modal>

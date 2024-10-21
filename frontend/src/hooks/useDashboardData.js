@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../utils/axiosInstance';
 
-const useDashboardData = () => {
+const useDashboardData = (selectedMonth) => {
   const [expenses, setExpenses] = useState([]);
   const [monthlyIncome, setMonthlyIncome] = useState(0);
+  const [spent, setSpent] = useState(0); // To store the spent value
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
 
@@ -19,17 +20,20 @@ const useDashboardData = () => {
       setError(null); // Clear any existing errors before new fetch
 
       try {
-        // Fetch Expenses
+        // Fetch Expenses for the selected month
         const expensesResponse = await axiosInstance.get('/expenses', {
           headers: { Authorization: `Bearer ${token}` },
+          params: { month: selectedMonth }
         });
         setExpenses(expensesResponse.data);
 
-        // Fetch Monthly Income
-        const incomeResponse = await axiosInstance.get('/getUserMonthlyIncome', {
+        // Fetch Monthly Overview for the selected month
+        const overviewResponse = await axiosInstance.get('/getMonthlyOverview', {
           headers: { Authorization: `Bearer ${token}` },
+          params: { month: selectedMonth }
         });
-        setMonthlyIncome(incomeResponse.data.monthly_income);
+        setMonthlyIncome(overviewResponse.data.monthly_income);
+        setSpent(overviewResponse.data.spent);
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -40,9 +44,9 @@ const useDashboardData = () => {
     };
 
     fetchData();
-  }, []);
+  }, [selectedMonth]); // Listen for changes in selectedMonth
 
-  return { expenses, monthlyIncome, setMonthlyIncome, setExpenses, isLoading, error };
+  return { expenses, monthlyIncome, spent, setMonthlyIncome, setExpenses, isLoading, error };
 };
 
 export default useDashboardData;
