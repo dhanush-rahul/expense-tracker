@@ -36,3 +36,18 @@ class Expense(db.Model):
             'date': self.date.strftime('%Y-%m-%d'),
             'user_id': self.user_id
         }
+    
+class MonthlyOverview(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    month = db.Column(db.String(7), nullable=False)  # Format YYYY-MM
+    monthly_income = db.Column(db.Float, nullable=False)
+    spent = db.Column(db.Float, default=0.0)  # Default spent is 0.0
+    user = db.relationship('User', backref=db.backref('monthly_overviews', lazy=True))
+
+    def to_dict(self):
+        return {
+            'month': self.month,
+            'monthly_income': self.monthly_income,
+            'spent': self.spent
+        }

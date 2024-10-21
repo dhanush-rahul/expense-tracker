@@ -1,12 +1,13 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
-from app.models import User, Expense, db
+from app.models import User, Expense, db, MonthlyOverview
 from app.services import create_expense, update_expense, delete_expense
 import random
 from flask_mail import Message
 from flask_mail import Mail
 from werkzeug.security import generate_password_hash
 from sqlalchemy import desc
+from datetime import datetime
 
 mail = Mail()
 api_bp = Blueprint('api', __name__)
@@ -26,6 +27,14 @@ def register():
     new_user.monthly_income = monthly_income
     db.session.add(new_user)
     db.session.commit()
+    
+    # Get the current month in 'YYYY-MM' format
+    current_month = datetime.now().strftime('%Y-%m')
+
+    # Create a MonthlyOverview entry for the current month
+    monthly_overview = MonthlyOverview(user_id=new_user.id, month=current_month, monthly_income=monthly_income)
+    db.session.add(monthly_overview)
+    db.session.commit()
 
     return jsonify({'message': 'User registered successfully'}), 201
 
@@ -44,34 +53,52 @@ def login():
     access_token = create_access_token(identity=user.id)
     monthlyIncome = user.monthly_income
     return jsonify({'access_token': access_token, 'monthlyIncome':monthlyIncome}), 200
+
+@api_bp.route('/getMonthlyOverview', methods=['GET'])
+@jwt_required()
+def get_monthly_overview():
+    try:
+        user_id = get_jwt_identity()
+        month = request.args.get('month')  # Expecting 'YYYY-MM' format
+
+        # Fetch the MonthlyOverview for the selected month
+        monthly_overview = MonthlyOverview.query.filter_by(user_id=user_id, month=month).first()
+
+        if not monthly_overview:
+            return jsonify({"message": "No data found for this month"}), 404
+
+        return jsonify(monthly_overview.to_dict()), 200
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return jsonify({"message": "An error occurred"}), 500
+
 @api_bp.route('/setUserMonthlyIncome', methods=['POST'])
 @jwt_required()
 def setUserMonthlyIncome():
     try:
-        # Get the current user ID from the JWT
         user_id = get_jwt_identity()
-        
-        # Get the user based on the user_id
         user = User.query.get(user_id)
-        
-        # Ensure the user exists
+
         if not user:
             return jsonify({"message": "User not found"}), 404
         
-        # Get the data from the request body
         data = request.get_json()
-        monthly_income = int(data.get('monthly_income'))
+        monthly_income = float(data.get('monthly_income'))
+        month = data.get('month')  # Expecting 'YYYY-MM' format
 
-        # Ensure the monthly income is provided and valid
-        if monthly_income is None or monthly_income < 0:
-            return jsonify({"message": "Invalid monthly income value"}), 400
-        
-        print(f"Received monthly income: {monthly_income}")
-        print(f"User before update: {user.monthly_income}")
-        # Set the user's monthly income
-        user.monthly_income = monthly_income
+        # Ensure the monthly income and month are valid
+        if not monthly_income or not month:
+            return jsonify({"message": "Invalid data provided"}), 400
 
-        # Commit the changes to the database
+        # Find or create a MonthlyOverview for the selected month
+        monthly_overview = MonthlyOverview.query.filter_by(user_id=user_id, month=month).first()
+        if not monthly_overview:
+            monthly_overview = MonthlyOverview(user_id=user_id, month=month, monthly_income=monthly_income)
+            db.session.add(monthly_overview)
+        else:
+            monthly_overview.monthly_income = monthly_income
+
         db.session.commit()
 
         return jsonify({"message": "Monthly income updated successfully", "monthly_income": monthly_income}), 200
@@ -138,6 +165,8 @@ def edit_expense(id):
 def remove_expense(id):
     user_id = get_jwt_identity()
     return delete_expense(id, user_id)
+
+
 otp_storage = {}
 # Forgot Password: Send OTP to user's email
 @api_bp.route('/forgot-password', methods=['POST'])
