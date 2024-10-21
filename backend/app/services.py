@@ -5,30 +5,21 @@ from datetime import datetime
 
 def update_monthly_overview(user_id, date, amount_change, is_new_month=False):
     month_str = date.strftime('%Y-%m')
-
-    # Fetch the user's default monthly income
-    user = User.query.get(user_id)
-    if not user:
-        return jsonify({'message': 'User not found'}), 404
-    default_monthly_income = user.monthly_income
     
+    # Fetch the user to get their default monthly_income
+    user = User.query.get(user_id)
+
     # Fetch or create a MonthlyOverview for this month
     monthly_overview = MonthlyOverview.query.filter_by(user_id=user_id, month=month_str).first()
     
-    if not monthly_overview and is_new_month:
-        # Create a new MonthlyOverview if this month is not found, and set the default monthly income
-        monthly_overview = MonthlyOverview(
-            user_id=user_id,
-            month=month_str,
-            spent=0,
-            monthly_income=default_monthly_income  # Set it to the user's default monthly income
-        )
+    if not monthly_overview:
+        # If this is a new month, create a MonthlyOverview with the user's default monthly_income
+        monthly_overview = MonthlyOverview(user_id=user_id, month=month_str, spent=0, monthly_income=user.monthly_income)
         db.session.add(monthly_overview)
-    
-    if monthly_overview:
-        # Update the spent field
-        monthly_overview.spent += amount_change
-        db.session.commit()
+
+    # Update the spent field
+    monthly_overview.spent += amount_change
+    db.session.commit()
 
 
 def create_expense(data, user_id):
