@@ -132,17 +132,25 @@ def get_categories():
 def get_expenses():
     try:
         user_id = get_jwt_identity()
-        expenses = Expense.query.filter_by(user_id=user_id).order_by(desc(Expense.date), desc(Expense.id)).all()
+        selected_month = request.args.get('month')
+        
+        if selected_month:
+            # Filter expenses based on the selected month (YYYY-MM format)
+            expenses = Expense.query.filter(
+                Expense.user_id == user_id,
+                Expense.date.like(f"{selected_month}%")
+            ).order_by(desc(Expense.date)).all()
+        else:
+            expenses = Expense.query.filter_by(user_id=user_id).order_by(desc(Expense.date)).all()
 
         if not expenses:
-            return jsonify({'message': 'No expenses found for this user'}), 200
+            return jsonify([]), 200
 
         return jsonify([expense.to_dict() for expense in expenses]), 200
 
     except Exception as e:
         print(f"Error: {str(e)}")
-        return jsonify({'message': 'An error occurred'}), 200
-
+        return jsonify({'message': 'An error occurred'}), 500
 
 @api_bp.route('/expenses', methods=['POST'])
 @jwt_required()
