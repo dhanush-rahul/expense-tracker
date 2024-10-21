@@ -3,12 +3,11 @@ import Modal from '../Modal'; // Assuming you have a Modal component
 import axiosInstance from '../../utils/axiosInstance';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-const IncomeSavings = ({ monthlyIncome, expenses, onUpdateIncome }) => {
+const IncomeSavings = ({ monthlyIncome, spent, onUpdateIncome }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newMonthlyIncome, setNewMonthlyIncome] = useState(monthlyIncome);
 
-  const spentAmount = (expenses && expenses.length) ? expenses.reduce((sum, expense) => sum + expense.amount, 0) : 0;
-  const remainingAmount = monthlyIncome - spentAmount;
+  const remainingAmount = monthlyIncome - spent;
 
   const openModal = () => {
     setNewMonthlyIncome(monthlyIncome);
@@ -66,7 +65,7 @@ const IncomeSavings = ({ monthlyIncome, expenses, onUpdateIncome }) => {
       Spent
     </div>
     <div className="w-full flex items-center justify-center py-6">
-      <p className="text-4xl text-[rgb(178,57,57)]">{formatCurrency(spentAmount)}</p>
+      <p className="text-4xl text-[rgb(178,57,57)]">{formatCurrency(spent)}</p>
     </div>
   </div>
 
