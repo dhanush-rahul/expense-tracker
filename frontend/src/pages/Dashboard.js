@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useDashboardData from '../hooks/useDashboardData';
 import axiosInstance from '../utils/axiosInstance';
 import { PacmanLoader } from 'react-spinners';
@@ -12,7 +12,13 @@ import FloatingButton from '../components/FloatingButton';
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentExpense, setCurrentExpense] = useState(null);
+
+  // Retrieve the selected month from localStorage or fallback to current month
   const [selectedMonth, setSelectedMonth] = useState(() => {
+    const storedMonth = localStorage.getItem('selectedMonth');
+    if (storedMonth) {
+      return storedMonth;
+    }
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -65,7 +71,9 @@ const Dashboard = () => {
   };
 
   const handleMonthChange = (event) => {
-    setSelectedMonth(event.target.value); // Update the selected month
+    const newMonth = event.target.value;
+    setSelectedMonth(newMonth); // Update the selected month
+    localStorage.setItem('selectedMonth', newMonth); // Store the selected month in localStorage
   };
 
   const onUpdateIncome = (newIncome) => {
@@ -112,7 +120,7 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-6 bg-gradient-to-b from-gray-900 to-gray-800 h-[93.5%]">
-        {/* Left Column */}
+        {/* Left Column */} 
         <div className="flex flex-col h-full space-y-4 overflow-auto">
           {/* Income and Savings Section */}
           <div className="bg-gray-700 text-white rounded-lg shadow-md p-4">
