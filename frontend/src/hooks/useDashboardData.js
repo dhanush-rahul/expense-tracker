@@ -32,12 +32,14 @@ const useDashboardData = (selectedMonth) => {
           headers: { Authorization: `Bearer ${token}` },
           params: { month: selectedMonth }
         });
-        setMonthlyIncome(overviewResponse.data.monthly_income);
-        setSpent(overviewResponse.data.spent);
-
+        setMonthlyIncome(overviewResponse.data.monthly_income || 0); // Set default if no income
+        setSpent(overviewResponse.data.spent || 0); // Set default if no spent data
       } catch (error) {
         console.error('Error fetching data:', error);
-        setError('Failed to fetch data. Please try again later.');
+        // Clear data instead of showing an error
+        setExpenses([]); // Set default empty expenses
+        setMonthlyIncome(0); // Reset to default value
+        setSpent(0); // Reset to default value
       } finally {
         setIsLoading(false); // Ensure loading is stopped regardless of success or failure
       }
@@ -46,7 +48,7 @@ const useDashboardData = (selectedMonth) => {
     fetchData();
   }, [selectedMonth]); // Listen for changes in selectedMonth
 
-  return { expenses, monthlyIncome, spent, setMonthlyIncome, setExpenses, isLoading, error };
+  return { expenses, monthlyIncome, spent, setSpent, setMonthlyIncome, setExpenses, isLoading, error };
 };
 
 export default useDashboardData;

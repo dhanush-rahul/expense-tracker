@@ -30,15 +30,15 @@ const Login = () => {
         password: loginData.password,
       });
       localStorage.setItem('token', response.data.access_token);
-      toast.success("Login successful")
+      toast.success("Login successful");
       // Delay navigation to allow toast to appear
       setTimeout(() => {
         navigate('/dashboard');
-      }, 2000);
+      }, 1000);
       
     } catch (error) {
       const message = error.response?.data?.message || 'Login failed. Please try again.';
-      toast.error(message)
+      toast.error(message);
       setLoginData((prevData) => ({
         ...prevData,
         errorMessage: message,
@@ -46,13 +46,13 @@ const Login = () => {
     }
   };
 
-
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+      <div className="bg-gray-700 rounded-lg shadow-lg p-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold text-white mb-6 text-center">Login</h2>
         <LoginBox loginData={loginData} setLoginData={setLoginData} handleLogin={handleLogin} />
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 };

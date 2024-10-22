@@ -13,10 +13,9 @@ const LoginBox = ({ loginData, setLoginData, handleLogin }) => {
 
   return (
     <form onSubmit={handleLogin} className="space-y-6">
-      <h2 className="text-2xl text-center text-black">Log in</h2>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Email address</label>
+        <label className="block text-sm font-medium text-white">Email address</label>
         <input
           type="email"
           name="email"
@@ -29,7 +28,7 @@ const LoginBox = ({ loginData, setLoginData, handleLogin }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Password</label>
+        <label className="block text-sm font-medium text-white">Password</label>
         <input
           type="password"
           name="password"

@@ -16,7 +16,6 @@ const AddEditExpense = ({ existingExpense = false, onSubmitSuccess }) => {
     }
   });
   const [description, setDescription] = useState(existingExpense?.description || '');
-  const navigate = useNavigate();
 
   // Fetch categories from the API
   useEffect(() => {
@@ -36,7 +35,7 @@ const AddEditExpense = ({ existingExpense = false, onSubmitSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    const data = { amount : parseFloat(amount), category, date, description }; // Keep the date as a string in 'YYYY-MM-DD' format
+    const data = { amount: parseFloat(amount), category, date, description }; // Keep the date as a string in 'YYYY-MM-DD' format
 
     try {
       if (existingExpense) {
@@ -64,20 +63,32 @@ const AddEditExpense = ({ existingExpense = false, onSubmitSuccess }) => {
     <div>
       <div className="flex justify-center items-center ">
         <div className="p-8 max-w-lg w-full">
-          <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+          <h2 className="text-2xl font-bold mb-6 text-center text-white">
             {existingExpense ? 'Edit' : 'Add'} Expense
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="amount">Amount</label>
-              <input type="number" id="amount" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Amount"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400" required />
+              <label className="block text-sm font-medium text-white mb-1" htmlFor="amount">Amount</label>
+              <input
+                type="number"
+                id="amount"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="Amount"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black placeholder-gray-400"
+                required
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="category">Category</label>
-              <select id="category" value={category} onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400" required>
-                <option value="">Select a Category</option>
+              <label className="block text-sm font-medium text-white mb-1" htmlFor="category">Category</label>
+              <select
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black placeholder-gray-400"
+                required
+              >
+                <option value="" disabled className="placeholder-gray-400">Select a Category</option>
                 {categories.map((cat, index) => (
                   <option key={index} value={cat}>
                     {cat}
@@ -86,14 +97,25 @@ const AddEditExpense = ({ existingExpense = false, onSubmitSuccess }) => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="date">Date</label>
-              <input type="date" id="date" value={date} onChange={(e) => setDate(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400" required />
+              <label className="block text-sm font-medium text-white mb-1" htmlFor="date">Date</label>
+              <input
+                type="date"
+                id="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black placeholder-gray-400"
+                required
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="description">Description</label>
-              <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
+              <label className="block text-sm font-medium text-white mb-1" htmlFor="description">Description</label>
+              <textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Description"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black placeholder-gray-400"
+              ></textarea>
             </div>
             <button type="submit"
               className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-500 transition-all">
@@ -104,6 +126,7 @@ const AddEditExpense = ({ existingExpense = false, onSubmitSuccess }) => {
       </div>
       <ToastContainer />
     </div>
+
   );
 };
 

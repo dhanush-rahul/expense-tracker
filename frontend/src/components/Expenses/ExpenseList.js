@@ -41,29 +41,32 @@ const ExpenseList = ({ expenses, onEdit, onDelete }) => {
       {expenses && expenses.length > 0 ? (
         expenses.map((expense) => (
           <div key={expense.id} className="flex items-center justify-between border-b py-4 pr-5">
-            
+
             {/* Category Icon and Description */}
             <div className="w-1/3 flex items-center">
-              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 mr-4">
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 mr-4">
                 <span className="text-2xl">
                   <FontAwesomeIcon icon={categoryIcons[expense.category]} />
                 </span>
               </div>
               <div className="flex flex-col justify-center">
-                <p className="text-gray-800 font-medium">
+                <p className="text-white font-medium">
                   {expense.description ? expense.description : expense.category}
                 </p>
               </div>
             </div>
-            
+
             {/* Date */}
             <div className="w-1/3 flex justify-center">
-              <p className="text-gray-500 text-center">
-                {new Date(expense.date).toLocaleDateString('en-GB', {
-                  day: '2-digit',
-                  month: 'short',
-                  year: '2-digit',
-                }).toUpperCase()}
+              <p className="text-white text-center">
+                {(() => {
+                  const [year, month, day] = expense.date.split('-');
+                  return new Date(year, month - 1, day).toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: '2-digit',
+                  }).toUpperCase();
+                })()}
               </p>
             </div>
 
@@ -76,7 +79,7 @@ const ExpenseList = ({ expenses, onEdit, onDelete }) => {
                 <FontAwesomeIcon icon={faEdit} size="lg" />
               </button>
 
-              <p className="w-1/2 text-xl font-bold text-gray-800 text-center">
+              <p className="w-1/2 text-xl font-bold text-white text-center">
                 {formatCurrency(expense.amount)}
               </p>
 
@@ -90,7 +93,7 @@ const ExpenseList = ({ expenses, onEdit, onDelete }) => {
           </div>
         ))
       ) : (
-        <div className="text-center text-gray-600">No expenses available</div>
+        <div className="text-center text-white">No expenses available</div>
       )}
     </div>
   );

@@ -4,10 +4,10 @@ import React from "react";
 const RegisterBox = ({ formData, setFormData, handleRegister }) => {
   return (
     <form onSubmit={handleRegister} className="space-y-6">
-      <h2 className="text-xl font-bold text-center">Introduce Yourself</h2>
+      <h2 className="text-xl font-bold text-center text-white">Introduce Yourself</h2>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Hi there! My name is</label>
+        <label className="block text-sm font-medium text-white">Hi there! My name is</label>
         <input
           type="text"
           value={formData.name}
@@ -21,7 +21,7 @@ const RegisterBox = ({ formData, setFormData, handleRegister }) => {
       {/* Additional Fields */}
       <div className="space-y-2 animate-fade-in">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Here's my email address:</label>
+          <label className="block text-sm font-medium text-white">Here's my email address:</label>
           <input
             type="email"
             value={formData.email}
@@ -33,7 +33,7 @@ const RegisterBox = ({ formData, setFormData, handleRegister }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">And here's my password:</label>
+          <label className="block text-sm font-medium text-white">And here's my password:</label>
           <input
             type="password"
             value={formData.password}
@@ -45,7 +45,7 @@ const RegisterBox = ({ formData, setFormData, handleRegister }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Confirm password:</label>
+          <label className="block text-sm font-medium text-white">Confirm password:</label>
           <input
             type="password"
             value={formData.confirmPassword}
@@ -57,7 +57,7 @@ const RegisterBox = ({ formData, setFormData, handleRegister }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Set your monthly income:</label>
+          <label className="block text-sm font-medium text-white">Set your monthly income:</label>
           <input
             type="number"
             value={formData.monthlyIncome}
@@ -76,7 +76,7 @@ const RegisterBox = ({ formData, setFormData, handleRegister }) => {
         </button>
       </div>
 
-      <p className="text-center text-xs text-gray-500">
+      <p className="text-center text-xs text-white">
         By signing up, you accept the Expense-Tracker Terms of Service.
       </p>
     </form>

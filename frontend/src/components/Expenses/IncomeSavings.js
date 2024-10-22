@@ -3,6 +3,7 @@ import Modal from '../Modal'; // Assuming you have a Modal component
 import axiosInstance from '../../utils/axiosInstance';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+
 const IncomeSavings = ({ monthlyIncome, spent, onUpdateIncome }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newMonthlyIncome, setNewMonthlyIncome] = useState(monthlyIncome);
@@ -32,6 +33,7 @@ const IncomeSavings = ({ monthlyIncome, spent, onUpdateIncome }) => {
       console.error('Error updating monthly income:', error);
     }
   };
+
   const formatCurrency = (value) => {
     if (value >= 1000000) {
       return `$ ${(value / 1000000).toFixed(1)}M`;
@@ -46,38 +48,41 @@ const IncomeSavings = ({ monthlyIncome, spent, onUpdateIncome }) => {
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
       {/* Total Box */}
       <div className="border-2 border-green-500 rounded-lg flex flex-col items-center justify-center">
-    <div className="w-full bg-teal-500 text-white font-bold p-2 text-center">
-      Total
-    </div>
-    <div className="w-full relative flex flex-col items-center justify-center py-6">
-      <p className="text-4xl text-teal-500">{formatCurrency(monthlyIncome)}</p>
-      <button
-        onClick={openModal}
-        className="absolute top-2 right-2 text-blue-500 hover:underline"
-      >
-        <FontAwesomeIcon icon={faEdit} size="lg" />
-      </button>
-    </div>
-  </div>
-{/* Spent Box */}
-<div className="border-2 border-[rgb(178,57,57)] rounded-lg flex flex-col items-center justify-center">
-    <div className="w-full bg-[rgb(178,57,57)] text-white font-bold p-2 text-center">
-      Spent
-    </div>
-    <div className="w-full flex items-center justify-center py-6">
-      <p className="text-4xl text-[rgb(178,57,57)]">{formatCurrency(spent)}</p>
-    </div>
-  </div>
+        <div className="w-full bg-green-600 text-white font-bold p-2 text-center">
+          Total
+        </div>
+        <div className="w-full relative flex flex-col items-center justify-center py-6">
+          <p className="text-4xl text-green-500">{formatCurrency(monthlyIncome)}</p>
+          <button
+            onClick={openModal}
+            className="absolute top-2 right-2 text-blue-400 hover:underline"
+          >
+            <FontAwesomeIcon icon={faEdit} size="lg" />
+          </button>
+        </div>
+      </div>
 
-  {/* Remaining Box */}
-  <div className="border-2 border-[rgb(28,80,164)] rounded-lg flex flex-col items-center justify-center">
-    <div className="w-full bg-[rgb(28,80,164)] text-white font-bold p-2 text-center">
-      Remaining
-    </div>
-    <div className="w-full flex items-center justify-center py-6">
-      <p className="text-4xl text-[rgb(28,80,164)]">{formatCurrency(remainingAmount)}</p>
-    </div>
-  </div>
+      {/* Spent Box */}
+      <div className="border-2 border-red-500 rounded-lg flex flex-col items-center justify-center">
+        <div className="w-full bg-red-600 text-white font-bold p-2 text-center">
+          Spent
+        </div>
+        <div className="w-full flex items-center justify-center py-6">
+          <p className="text-4xl text-red-500">{formatCurrency(spent)}</p>
+        </div>
+      </div>
+
+      {/* Remaining Box */}
+      <div className="border-2 border-blue-500 rounded-lg flex flex-col items-center justify-center">
+        <div className="w-full bg-blue-600 text-white font-bold p-2 text-center">
+          Remaining
+        </div>
+        <div className="w-full flex items-center justify-center py-6">
+          <p className={`text-4xl ${remainingAmount < 0 ? 'text-red-500' : 'text-blue-500'}`}>
+            {formatCurrency(remainingAmount)}
+          </p>
+        </div>
+      </div>
 
       {/* Modal for Editing Monthly Income */}
       {isModalOpen && (

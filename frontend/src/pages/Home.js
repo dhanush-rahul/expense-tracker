@@ -21,7 +21,7 @@ const Home = () => {
     }
 
     return (
-        <div className="text-center">
+        <div className="text-center bg-gradient-to-b from-gray-900 to-gray-800">
             {/* Header Section */}
             <header className="bg-gray-100 text-gray-800 py-24">
                 <div className="max-w-2xl mx-auto px-4">

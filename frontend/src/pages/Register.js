@@ -48,8 +48,8 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100 text-black">
-      <div className="w-full max-w-md mx-10 p-8 bg-white rounded-lg shadow-md">
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-b from-gray-900 to-gray-800 text-black">
+      <div className="w-full max-w-md mx-10 p-8 bg-white rounded-lg shadow-md bg-gray-700">
         <RegisterBox formData={formData} setFormData={setFormData} handleRegister={handleRegister} />
       </div>
       <ToastContainer/>
