@@ -126,7 +126,6 @@ def get_categories():
     CATEGORIES = ['Entertainment', 'Food', 'Utilities', 'Transportation', 'Rent', 'Subscriptions']
     return jsonify(CATEGORIES), 200
 
-# Expense Management Routes
 @api_bp.route('/expenses', methods=['GET'])
 @jwt_required()
 def get_expenses():
@@ -135,10 +134,10 @@ def get_expenses():
         selected_month = request.args.get('month')
         
         if selected_month:
-            # Filter expenses based on the selected month (YYYY-MM format)
+            # Use TO_CHAR to compare only year and month
             expenses = Expense.query.filter(
                 Expense.user_id == user_id,
-                Expense.date.like(f"{selected_month}%")
+                db.func.to_char(Expense.date, 'YYYY-MM') == selected_month
             ).order_by(desc(Expense.date)).all()
         else:
             expenses = Expense.query.filter_by(user_id=user_id).order_by(desc(Expense.date)).all()
@@ -151,6 +150,7 @@ def get_expenses():
     except Exception as e:
         print(f"Error: {str(e)}")
         return jsonify({'message': 'An error occurred'}), 500
+
 
 @api_bp.route('/expenses', methods=['POST'])
 @jwt_required()

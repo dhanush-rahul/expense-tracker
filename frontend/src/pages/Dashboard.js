@@ -18,11 +18,15 @@ const Dashboard = () => {
     const month = String(now.getMonth() + 1).padStart(2, '0');
     return `${year}-${month}`;
   });
-
+ // Generate all months for the current year (e.g., ['2024-01', '2024-02', ..., '2024-12'])
+ const currentYear = new Date().getFullYear();
+ const allMonths = Array.from({ length: 12 }, (_, i) => {
+   const month = String(i + 1).padStart(2, '0');
+   return `${currentYear}-${month}`;
+ });
   // Fetch data based on the selected month
   const { expenses, monthlyIncome, spent, setExpenses, setMonthlyIncome, isLoading, error } = useDashboardData(selectedMonth);
 
-  const uniqueMonths = (expenses && expenses.length > 0) ? [...new Set(expenses.map(expense => expense.date.slice(0, 7)))] : [];
 
   const handleAddExpense = () => {
     setCurrentExpense(null);
@@ -72,14 +76,13 @@ const Dashboard = () => {
   return (
     <div className="h-screen bg-gradient-to-b from-gray-200 to-gray-300 overflow-hidden">
       <div className="pt-6 pl-6">
-        {uniqueMonths.length > 0 && (
           <select
             id="month-select"
             value={selectedMonth}
             onChange={handleMonthChange}
             className="px-4 py-2 border border-gray-300 rounded-md"
           >
-            {uniqueMonths.map((month) => {
+            {allMonths.map((month) => {
               const [year, monthNumber] = month.split('-'); // Split the string into year and month
               const formattedMonth = new Date(year, monthNumber - 1).toLocaleString('default', {
                 month: 'long',
@@ -93,7 +96,6 @@ const Dashboard = () => {
               );
             })}
           </select>
-        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-6 bg-gradient-to-b from-gray-200 to-gray-300 h-[93.5%]">

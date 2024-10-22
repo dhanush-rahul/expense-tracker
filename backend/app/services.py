@@ -2,18 +2,22 @@ from flask import jsonify
 from app.models import Expense, MonthlyOverview, User, db
 from datetime import datetime
 
-
-def update_monthly_overview(user_id, date, amount_change, is_new_month=False):
+def update_monthly_overview(user_id, date, amount_change):
     month_str = date.strftime('%Y-%m')
     
     # Fetch the user to get their default monthly_income
     user = User.query.get(user_id)
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+
+    print(f"User monthly income: {user.monthly_income}")  # Debugging line to check the income value
 
     # Fetch or create a MonthlyOverview for this month
     monthly_overview = MonthlyOverview.query.filter_by(user_id=user_id, month=month_str).first()
     
     if not monthly_overview:
         # If this is a new month, create a MonthlyOverview with the user's default monthly_income
+        print(f"Creating MonthlyOverview for {month_str} with monthly income {user.monthly_income}")
         monthly_overview = MonthlyOverview(user_id=user_id, month=month_str, spent=0, monthly_income=user.monthly_income)
         db.session.add(monthly_overview)
 
@@ -38,7 +42,7 @@ def create_expense(data, user_id):
         db.session.add(new_expense)
 
         # Update the MonthlyOverview for this month
-        update_monthly_overview(user_id, expense_date, new_expense.amount, is_new_month=True)
+        update_monthly_overview(user_id, expense_date, new_expense.amount)
         
         db.session.commit()
         return jsonify({'message': 'Expense created successfully'}), 201
@@ -70,7 +74,7 @@ def update_expense(expense_id, data, user_id):
         update_monthly_overview(user_id, original_date, -original_amount)
         
         # Adjust spent in the new month (add the new amount)
-        update_monthly_overview(user_id, new_date, new_amount, is_new_month=(original_date != new_date))
+        update_monthly_overview(user_id, new_date, new_amount)
         
         db.session.commit()
         return jsonify({'message': 'Expense updated successfully'}), 200
